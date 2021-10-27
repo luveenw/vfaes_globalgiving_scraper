@@ -1,0 +1,22 @@
+{
+  "name": "vfaes",
+  "version": "0.1.0",
+  "description": "Scrape user data from GlobalGiving",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "set DEBUG=puppeteer-extra,puppeteer-extra-plugin:* && node index.js",
+    "debug": "set DEBUG=puppeteer-extra,puppeteer-extra-plugin:* && node index.js"
+  },
+  "keywords": [],
+  "author": "luveenw@gmail.com",
+  "license": "ISC",
+  "dependencies": {
+    "luxon": "^2.0.2",
+    "promise-poller": "1.8.0",
+    "puppeteer-extra": "^3.1.18",
+    "puppeteer-extra-plugin-recaptcha": "^3.4.0",
+    "puppeteer-extra-plugin-stealth": "^2.7.8"
+  }
+}
