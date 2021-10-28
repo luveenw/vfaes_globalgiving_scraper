@@ -4,13 +4,8 @@
     <bookmark url="file://$PROJECT_DIR$/scraper.js" line="22" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c299b688-86fb-4681-a688-c65e4b54dbb6" name="Default Changelist" comment="">
+    <list default="true" id="c299b688-86fb-4681-a688-c65e4b54dbb6" name="Default Changelist" comment="Working: Ported to sequential promises instead of Promise.all. Next page testing pending">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/constants.js" beforeDir="false" afterPath="$PROJECT_DIR$/constants.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pageHelpers.js" beforeDir="false" afterPath="$PROJECT_DIR$/pageHelpers.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scrapeFunctions.js" beforeDir="false" afterPath="$PROJECT_DIR$/scrapeFunctions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scrapeResult.js" beforeDir="false" afterPath="$PROJECT_DIR$/scrapeResult.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scraper.js" beforeDir="false" afterPath="$PROJECT_DIR$/scraper.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -48,7 +43,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/scrapeFunctions.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="491">
@@ -62,6 +57,28 @@
       </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/result/donations_ending_2021-10-27_2021-10-27_20.46.57.006_6943.csv">
+          <provider selected="true" editor-type-id="csv-table-editor">
+            <state showInfoPanel="true" fixedHeaders="false" rowLines="3">
+              <column index="0" width="100" />
+              <column index="1" width="100" />
+              <column index="2" width="100" />
+              <column index="3" width="100" />
+              <column index="4" width="100" />
+              <column index="5" width="100" />
+              <column index="6" width="100" />
+              <column index="7" width="100" />
+              <column index="8" width="100" />
+              <column index="9" width="100" />
+              <column index="10" width="100" />
+              <column index="11" width="100" />
+              <column index="12" width="100" />
+            </state>
+          </provider>
+          <provider editor-type-id="csv-text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/result/donations_ending_2021-10-27_2021-10-27_20.50.45.815_7330.csv">
           <provider selected="true" editor-type-id="csv-table-editor">
             <state showInfoPanel="true" fixedHeaders="false" rowLines="3">
               <column index="0" width="100" />
@@ -303,7 +320,7 @@
       <workItem from="1631075620354" duration="6317000" />
       <workItem from="1631224220750" duration="6182000" />
       <workItem from="1631298286243" duration="13304000" />
-      <workItem from="1635255243079" duration="88008000" />
+      <workItem from="1635255243079" duration="89670000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit - local test data being scraped">
       <created>1635323936934</created>
@@ -319,15 +336,21 @@
       <option name="project" value="LOCAL" />
       <updated>1635382637283</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Working: Ported to sequential promises instead of Promise.all. Next page testing pending">
+      <created>1635393186587</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1635393186587</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="138468000" />
+    <option name="totallyTimeSpent" value="140130000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="2576" height="1416" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.113672495" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -337,13 +360,13 @@
       <window_info id="Favorites" order="5" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32936507" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49960256" visible="true" weight="0.31507936" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49960256" weight="0.31507936" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3515873" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="8" weight="0.32936507" />
+      <window_info active="true" anchor="bottom" id="Version Control" order="8" visible="true" weight="0.32936507" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="TypeScript" order="10" />
       <window_info anchor="bottom" id="Terminal" order="11" weight="0.32936507" />
@@ -363,10 +386,37 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="RECENTLY_FILTERED_USER_GROUPS">
+                <collection />
+              </option>
+              <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+                <collection />
+              </option>
+              <option name="COLUMN_ORDER">
+                <list>
+                  <option value="0" />
+                  <option value="1" />
+                  <option value="2" />
+                  <option value="3" />
+                </list>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Initial commit - local test data being scraped" />
     <MESSAGE value="Working, but getting net::ERR_ABORTED. Too many page navs in parallel?" />
-    <option name="LAST_COMMIT_MESSAGE" value="Working, but getting net::ERR_ABORTED. Too many page navs in parallel?" />
+    <MESSAGE value="Working: Ported to sequential promises instead of Promise.all. Next page testing pending" />
+    <option name="LAST_COMMIT_MESSAGE" value="Working: Ported to sequential promises instead of Promise.all. Next page testing pending" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -403,9 +453,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/example.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/example-2021102634553.png">
       <provider selected="true" editor-type-id="images" />
     </entry>
@@ -898,6 +945,16 @@
       </provider>
       <provider editor-type-id="csv-text-editor" />
     </entry>
+    <entry file="file://$PROJECT_DIR$/scrapeFunctions.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="491">
+          <caret line="117" column="113" selection-start-line="117" selection-start-column="113" selection-end-line="117" selection-end-column="113" />
+          <folding>
+            <element signature="e#0#26#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/result/donations_ending_2021-10-27_2021-10-27_20.46.57.006_6943.csv">
       <provider selected="true" editor-type-id="csv-table-editor">
         <state showInfoPanel="true" fixedHeaders="false" rowLines="3">
@@ -918,15 +975,25 @@
       </provider>
       <provider editor-type-id="csv-text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/scrapeFunctions.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="491">
-          <caret line="117" column="113" selection-start-line="117" selection-start-column="113" selection-end-line="117" selection-end-column="113" />
-          <folding>
-            <element signature="e#0#26#0" expanded="true" />
-          </folding>
+    <entry file="file://$PROJECT_DIR$/result/donations_ending_2021-10-27_2021-10-27_20.50.45.815_7330.csv">
+      <provider selected="true" editor-type-id="csv-table-editor">
+        <state showInfoPanel="true" fixedHeaders="false" rowLines="3">
+          <column index="0" width="100" />
+          <column index="1" width="100" />
+          <column index="2" width="100" />
+          <column index="3" width="100" />
+          <column index="4" width="100" />
+          <column index="5" width="100" />
+          <column index="6" width="100" />
+          <column index="7" width="100" />
+          <column index="8" width="100" />
+          <column index="9" width="100" />
+          <column index="10" width="100" />
+          <column index="11" width="100" />
+          <column index="12" width="100" />
         </state>
       </provider>
+      <provider editor-type-id="csv-text-editor" />
     </entry>
   </component>
   <component name="masterDetails">
