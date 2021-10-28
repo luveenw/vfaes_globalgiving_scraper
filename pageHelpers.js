@@ -5,7 +5,7 @@ import puppeteer from 'puppeteer-extra';
 import * as consts from './constants.js';
 
 export const elementForQuery = async (page, selector, debug = false) => {
-    debug && console.log(`Finding ${selector}...`);
+    // debug && console.log(`Finding ${selector}...`);
     let a = await page.$(selector);
     if (!a) {
         throw `No element found for selector ${selector} on page`;
@@ -26,7 +26,7 @@ export const pollPromise = promisePoller.default;
 
 export const screenshot = async (page, prefix) => {
     let options = {path: `screenshots\\${prefix}-${timestamp()}.png`, fullPage: true};
-    console.log(`Taking screenshot ${options.path}...`);
+    // console.log(`Taking screenshot ${options.path}...`);
     await page.screenshot(options);
 };
 
@@ -47,10 +47,10 @@ let solveCaptchas = async (page, retries = 3, interval = 1500, delay = 15000) =>
 let solveCaptchaTask = page => {
     return async function () {
         return new Promise(async function (resolve, reject) {
-            console.log('Trying captcha...');
+            // console.log('Trying captcha...');
             // await screenshot(page, 'before-solve-captchas');
             let response = await page.solveRecaptchas();
-            console.log('Captcha attempt response:', response);
+            // console.log('Captcha attempt response:', response);
             // await screenshot(page, 'after-plugin-response');
             if (response && response.error) return reject(response.captchas);
             resolve(response.captchas);
@@ -69,7 +69,7 @@ export const performLogin = async () => {
     elementForQuery(page, consts.LOGIN_PASSWORD_ID, true) &&
     await page.type(consts.LOGIN_PASSWORD_ID, consts.LOGIN_PASSWORD, {delay: 100});
     let result = await solveCaptchas(page);
-    console.log('result:', result);
+    // console.log('result:', result);
 
     // await screenshot(page, 'after-solve-captchas');
 

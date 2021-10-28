@@ -13,7 +13,7 @@ import {
 } from './scrapeFunctions.js';
 import {scrapeResult, scrapeResultsString} from './scrapeResult.js';
 
-import {DONATIONS_URL, LOCAL_FILE_URL, NEXT_BUTTON_CLASS, TABLE_ROW_SELECTOR} from './constants.js';
+import {DONATIONS_URL, LOCAL_FILE_URL, NEXT_BUTTON_CLASS, TABLE_ROW_SELECTOR, Y_M_D, Y_M_D_TIME} from './constants.js';
 
 const fs = fspkg.promises;
 const {DateTime} = luxon;
@@ -69,7 +69,8 @@ const writeResultsToFile = async (results, path) => {
         await line();
     }
 };
-export const resultsFilename = date => `donations_ending_${date.toFormat('yyyy-MM-dd')}_${DateTime.now().toFormat('yyyy-MM-dd_mm_ss_SSS')}_${Math.floor(Math.random() * 9999)}.csv`;
+export const resultsFilename = date =>
+    `donations_ending_${date.toFormat(Y_M_D)}_${DateTime.now().toFormat(Y_M_D_TIME)}_${Math.floor(Math.random() * 9999)}.csv`;
 
 const areDatesEqual = (d1, d2) => d1.toMillis() === d2.toMillis();
 
@@ -94,51 +95,43 @@ const gatherUserData = async (page, startDate, endDate) => {
         let tableRows = await page.$$(TABLE_ROW_SELECTOR);
         let pageResults = [];
         numRows = tableRows.length;
-        console.log(`${numRows} rows found.`);
+        // console.log(`${numRows} rows found.`);
         if (numRows === 0) {
             break;
         }
-        console.log(`Filtering rows by date...`);
+        // console.log(`Filtering rows by date...`);
         /*let cols1 = await (await tableRows[0]).$$("td");
         console.log(`Columns:${await cols1}`);
         console.log(`Donation date column: ${cols1[5]}`);
         console.log(`Donation date column value: ${await (await cols1[5].getProperty('innerText')).jsonValue()}`);*/
-
-        await Promise.all(tableRows.map(async (row) => {
+        for (const row of tableRows) {
             let colElems = await row.$$("td");
-            console.log(`colElems: ${colElems}`);
-            let cols = [...colElems];
-            let donationDateCol = await cols[FIELD_COLUMN['donationDate']];
-            console.log(`Checking dateDonated for ${donationDateCol}...`);
+            // console.log(`colElems: ${colElems}`);
+            let donationDateCol = await colElems[FIELD_COLUMN['donationDate']];
+            // console.log(`Checking dateDonated for ${donationDateCol}...`);
             let dateDonated = await donationDate(donationDateCol);
             let dateInRange = isDateBetween(dateDonated, startDate, endDate);
-            console.log(`${dateDonated} in range: ${dateInRange}`);
+            // console.log(`${dateDonated} in range: ${dateInRange}`);
             if (dateInRange) {
                 let scrapeObject = {};
-                await Promise.all(cols.map(async (col, index) => {
+                for (const index of colElems.keys()) {
                     let fields = COLUMN_FIELDS[index];
-                    !!fields && await Promise.all(fields.map(async field => {
-                        console.log(`Running scraper for ${field} column...`);
-                        let scrapedValue = await FIELD_SCRAPERS[field](cols[FIELD_COLUMN[field]]);
-                        console.log(`Scraped value ${scrapedValue} for ${field}`);
-                        scrapeObject[field] = scrapedValue;
-                    }));
-                }));
+                    if (!!fields) {
+                        for (const field of fields) {
+                            // console.log(`Running scraper for ${field} column...`);
+                            let scrapedValue = await FIELD_SCRAPERS[field](colElems[FIELD_COLUMN[field]]);
+                            // console.log(`Scraped value ${scrapedValue} for ${field}`);
+                            scrapeObject[field] = scrapedValue;
+                        }
+                    }
+                }
                 pageResults.push(scrapeResult(scrapeObject));
             }
+        }
 
-            /*let cols = Array.from(, (col, index) => scrapers[COLUMN_FIELDS]());
-            let colsText = cols.reduce((result, col) => `${result} [${col}]`, '');
-            console.log(`Columns: ${colsText}`);
-            let dateDonated = donationDate({row, page}).donationDate;
-            if (isDateBetween(dateDonated, startDate, endDate)) {
-                result.push(row);
-            }*/
-        }));
-
-        console.log(`${pageResults.length} rows remain after reading and filtering.`);
-        console.log(`Results from scraping page ${pageNumber}:\n${scrapeResultsString(pageResults)}`);
-        console.log(`Adding ${pageResults.length} rows to results...`);
+        // console.log(`${pageResults.length} rows remain after reading and filtering.`);
+        // console.log(`Results from scraping page ${pageNumber}:\n${scrapeResultsString(pageResults)}`);
+        // console.log(`Adding ${pageResults.length} rows to results...`);
         results.push(...pageResults);
 
         shouldContinue = pageResults.length === numRows;
@@ -147,26 +140,29 @@ const gatherUserData = async (page, startDate, endDate) => {
             await gotoNextUserDataPage(page);
         }
     }
-    console.log('results after reading and filtering:', Object.entries(results));
+    // console.log('results after reading and filtering:', Object.entries(results));
     return {page, results};
 };
 
-const processResults = async (page, results) =>
-    await Promise.all(results.map(async (result) => {
+const processResults = async (page, results) => {
+    let processedResults = [];
+    for (const result of results) {
         let processedResult = {};
-        await Promise.all(Object.keys(PROCESSORS).map(async (field) => {
-            let processedValue = await PROCESSORS[field](page, result);
-            console.log(`Processed value ${processedValue} for ${field}`);
+        for (const [field, processor] of Object.entries(PROCESSORS)) {
+            let processedValue = await processor(page, result);
+            // console.log(`Processed value ${processedValue} for ${field}`);
             processedResult[field] = processedValue;
-        }));
-        console.log("result:", Object.entries(result));
-        console.log("processedResult:", Object.entries(processedResult));
+        }
+        // console.log("result:", Object.entries(result));
+        // console.log("processedResult:", Object.entries(processedResult));
         for (const field of Object.keys(processedResult)) {
             result[field] = processedResult[field];
         }
-        console.log("merged result:", Object.entries(result));
-        return result;
-    }));
+        // console.log("merged result:", Object.entries(result));
+        processedResults.push(result);
+    }
+    return processedResults;
+};
 
 const gotoNextUserDataPage = async page => {
     elementForQuery(page, NEXT_BUTTON_CLASS) &&

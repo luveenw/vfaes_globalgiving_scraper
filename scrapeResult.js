@@ -9,17 +9,23 @@ const RESULT_TEMPLATE = {
     donorEmail: '',    // donor email - second pass scrape
     donorProfileLink: '',    // link to donor profile page, which has email listed
     trafficSource: '',
-    isRecurring: false,    // is value of trafficSource column == 'recurring'
+    recurring: 'No',    // 'Yes' or 'No'
+    recurringStatus: '', // Blank if recurring is 'No'; string enclosed in () if recurring is 'Yes'
     paymentMethod: '', // 'paypal', 'applepay', or 'creditcard' - confirm these are all possible values
     donationDate: '',
-    recurringStatus: 'No', // 'No' or 'Yes (N donations)'
     totalAmount: 0.00,
     currency: 'USD',
     totalAmountUSD: 0.00
 };
 
+/**
+ * Creates a scrape result object using the values specified for the fields in object.
+ * @param object object with fields to assign values to in scrape result object
+ * @returns a scrape result object with updates to fields specified in the object passed as a parameter.
+ * NOTE: This version does not support deep copies! Update to use Object.assign() if this is needed in the future.
+ */
 export const scrapeResult = (object = undefined) =>
-    Object.assign({...RESULT_TEMPLATE, ...object});
+    ({...RESULT_TEMPLATE, ...object});
 
 
 export const scrapeResultsString = results =>

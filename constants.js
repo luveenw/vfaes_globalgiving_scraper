@@ -1,6 +1,6 @@
 // GlobalGiving
 export const GLOBALGIVING_URL = 'https://www.globalgiving.org';
-export const LOGIN_URL = GLOBALGIVING_URL + '/dy/v2/login/form.html';
+export const LOGIN_URL = `${GLOBALGIVING_URL}/dy/v2/login/form.html`;
 export const LOGIN_USERNAME = 'sangita@vfaes.org';
 export const LOGIN_PASSWORD = 'love4Arjun*';
 export const LOGIN_USERNAME_ID = '#login_email';
@@ -12,6 +12,11 @@ export const TABLE_ROW_SELECTOR = '#donation tbody tr';
 export const NEXT_BUTTON_CLASS = 'a.next';
 export const DONOR_EMAIL_TEXT_ID = 'input#thankyou_to';
 export const DONATION_ID_REGEX = /receiptItemId=[0-9]*/;
+export const DIGIT_REGEX = /[0-9]/;
+export const DECIMAL_OR_INTEGER_REGEX = /([0-9]+\.[0-9]+)|([0-9]+)/;
+export const Y_M_D = 'yyyy-MM-dd';
+export const Y_M_D_TIME = `${Y_M_D}_HH.mm.ss.SSS`;
+
 
 // 2captcha
 export const TWO_CAPTCHA_TOKEN = '616b879642c7d3c4be73891d5c753420';
