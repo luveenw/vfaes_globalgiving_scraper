@@ -4,17 +4,8 @@
     <bookmark url="file://$PROJECT_DIR$/src/scraper.js" line="23" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c299b688-86fb-4681-a688-c65e4b54dbb6" name="Default Changelist" comment="Working: Ported to sequential promises instead of Promise.all. Next page testing pending">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/constants.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/constants.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+    <list default="true" id="c299b688-86fb-4681-a688-c65e4b54dbb6" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pageHelpers.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pageHelpers.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scrapeFunctions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/scrapeFunctions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scrapeResult.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/scrapeResult.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scraper.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/scraper.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -28,11 +19,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/package.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="308">
-              <caret line="14" column="19" lean-forward="true" selection-start-line="14" selection-start-column="19" selection-end-line="14" selection-end-column="19" />
+            <state relative-caret-position="264">
+              <caret line="12" column="24" lean-forward="true" selection-start-line="12" selection-start-column="24" selection-end-line="12" selection-end-column="24" />
             </state>
           </provider>
         </entry>
@@ -49,11 +40,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="22">
-              <caret line="1" column="6" lean-forward="true" selection-start-line="1" selection-start-column="6" selection-end-line="1" selection-end-column="6" />
+              <caret line="1" column="6" selection-start-line="1" selection-start-column="6" selection-end-line="1" selection-end-column="6" />
             </state>
           </provider>
         </entry>
@@ -62,7 +53,7 @@
         <entry file="file://$PROJECT_DIR$/index.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="682">
-              <caret line="31" column="18" lean-forward="true" selection-start-line="31" selection-start-column="18" selection-end-line="31" selection-end-column="18" />
+              <caret line="31" column="18" selection-start-line="31" selection-start-column="18" selection-end-line="31" selection-end-column="18" />
               <folding>
                 <element signature="e#0#40#0" expanded="true" />
               </folding>
@@ -190,10 +181,10 @@
         <option value="$PROJECT_DIR$/src/mailer.js" />
         <option value="$PROJECT_DIR$/src/index.js" />
         <option value="$PROJECT_DIR$/src/pageHelpers.js" />
-        <option value="$PROJECT_DIR$/package.json" />
         <option value="$PROJECT_DIR$/index.js" />
         <option value="$PROJECT_DIR$/src/scraper.js" />
         <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/package.json" />
       </list>
     </option>
   </component>
@@ -308,7 +299,7 @@
       <workItem from="1631075620354" duration="6317000" />
       <workItem from="1631224220750" duration="6182000" />
       <workItem from="1631298286243" duration="13304000" />
-      <workItem from="1635255243079" duration="97552000" />
+      <workItem from="1635255243079" duration="98352000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit - local test data being scraped">
       <created>1635323936934</created>
@@ -338,17 +329,24 @@
       <option name="project" value="LOCAL" />
       <updated>1635394789548</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="restructuring; prep for user-initiated scraping">
+      <created>1635444127048</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1635444127048</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="148012000" />
+    <option name="totallyTimeSpent" value="148812000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="2576" height="1416" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.113672495" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.113672495" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="aws.explorer" order="3" side_tool="true" />
@@ -362,10 +360,10 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="8" sideWeight="0.49960256" visible="true" weight="0.32936507" />
+      <window_info anchor="bottom" id="Version Control" order="8" sideWeight="0.49960256" weight="0.32936507" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="TypeScript" order="10" />
-      <window_info anchor="bottom" id="Terminal" order="11" weight="0.30079365" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="11" visible="true" weight="0.30079365" />
       <window_info anchor="bottom" id="Event Log" order="12" sideWeight="0.5007949" side_tool="true" weight="0.31507936" />
       <window_info anchor="bottom" id="Messages" order="13" weight="0.32936507" />
       <window_info anchor="bottom" id="Inspection Results" order="14" weight="0.32936507" />
@@ -412,7 +410,8 @@
     <MESSAGE value="Initial commit - local test data being scraped" />
     <MESSAGE value="Working, but getting net::ERR_ABORTED. Too many page navs in parallel?" />
     <MESSAGE value="Working: Ported to sequential promises instead of Promise.all. Next page testing pending" />
-    <option name="LAST_COMMIT_MESSAGE" value="Working: Ported to sequential promises instead of Promise.all. Next page testing pending" />
+    <MESSAGE value="restructuring; prep for user-initiated scraping" />
+    <option name="LAST_COMMIT_MESSAGE" value="restructuring; prep for user-initiated scraping" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -965,13 +964,6 @@
       </provider>
       <provider editor-type-id="csv-text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/package.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="308">
-          <caret line="14" column="19" lean-forward="true" selection-start-line="14" selection-start-column="19" selection-end-line="14" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/scrapeResult.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="644">
@@ -985,7 +977,7 @@
     <entry file="file://$PROJECT_DIR$/index.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="682">
-          <caret line="31" column="18" lean-forward="true" selection-start-line="31" selection-start-column="18" selection-end-line="31" selection-end-column="18" />
+          <caret line="31" column="18" selection-start-line="31" selection-start-column="18" selection-end-line="31" selection-end-column="18" />
           <folding>
             <element signature="e#0#40#0" expanded="true" />
           </folding>
@@ -1005,7 +997,14 @@
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="22">
-          <caret line="1" column="6" lean-forward="true" selection-start-line="1" selection-start-column="6" selection-end-line="1" selection-end-column="6" />
+          <caret line="1" column="6" selection-start-line="1" selection-start-column="6" selection-end-line="1" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="264">
+          <caret line="12" column="24" lean-forward="true" selection-start-line="12" selection-start-column="24" selection-end-line="12" selection-end-column="24" />
         </state>
       </provider>
     </entry>

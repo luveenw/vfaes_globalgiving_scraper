@@ -9,6 +9,9 @@
     "start": "node index.js",
     "debug": "set DEBUG=puppeteer-extra,puppeteer-extra-plugin:* && node index.js"
   },
+  "engines" : {
+    "node" : ">=14.12.0"
+  },
   "keywords": [],
   "author": "luveenw@gmail.com",
   "license": "ISC",
