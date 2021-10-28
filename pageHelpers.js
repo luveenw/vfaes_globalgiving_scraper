@@ -48,10 +48,10 @@ let solveCaptchaTask = page => {
     return async function () {
         return new Promise(async function (resolve, reject) {
             console.log('Trying captcha...');
-            await screenshot(page, 'before-solve-captchas');
+            // await screenshot(page, 'before-solve-captchas');
             let response = await page.solveRecaptchas();
             console.log('Captcha attempt response:', response);
-            await screenshot(page, 'after-plugin-response');
+            // await screenshot(page, 'after-plugin-response');
             if (response && response.error) return reject(response.captchas);
             resolve(response.captchas);
         });
@@ -62,7 +62,7 @@ export const performLogin = async () => {
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
 
-    await page.goto(consts.LOGIN_URL);
+    await gotoUrl(page, consts.LOGIN_URL);
 
     elementForQuery(page, consts.LOGIN_USERNAME_ID, true) &&
     await page.type(consts.LOGIN_USERNAME_ID, consts.LOGIN_USERNAME, {delay: 100});
@@ -71,7 +71,7 @@ export const performLogin = async () => {
     let result = await solveCaptchas(page);
     console.log('result:', result);
 
-    await screenshot(page, 'after-solve-captchas');
+    // await screenshot(page, 'after-solve-captchas');
 
     elementForQuery(page, consts.LOGIN_BUTTON_ID) &&
     await Promise.all([
@@ -79,13 +79,13 @@ export const performLogin = async () => {
         page.click(consts.LOGIN_BUTTON_ID, {delay: 100, button: "left", clickCount: 1})
     ]);
 
-    await screenshot(page, 'logged-in');
+    // await screenshot(page, 'logged-in');
 
     if (page.url() !== consts.LOGGED_IN_URL) {
         return {browser, page, undefined};
     }
 
-    return {browser, page, result};
+    return {browser, page, loginResult: result};
 };
 
 export const loadFile = async (url) => {
@@ -97,3 +97,9 @@ export const loadFile = async (url) => {
 
     return {browser, page};
 };
+
+export const gotoUrl = async (page, url, options = {waitUntil: 'domcontentloaded'}) =>
+    await Promise.all([
+        page.waitForNavigation(),
+        page.goto(url, options),
+    ]);

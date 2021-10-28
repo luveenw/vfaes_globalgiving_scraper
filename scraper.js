@@ -1,7 +1,8 @@
 import luxon from "luxon";
 import fspkg from 'fs';
+import puppeteer from 'puppeteer-extra';
 
-import {elementForQuery, loadFile} from './pageHelpers.js';
+import {elementForQuery, gotoUrl, performLogin} from './pageHelpers.js';
 import {
     COLUMN_FIELDS,
     donationDate,
@@ -17,27 +18,35 @@ import {DONATIONS_URL, LOCAL_FILE_URL, NEXT_BUTTON_CLASS, TABLE_ROW_SELECTOR} fr
 const fs = fspkg.promises;
 const {DateTime} = luxon;
 
+export const testRedirects = async () => {
+    let browser = await puppeteer.launch();
+    let page = await browser.newPage();
+
+    await gotoUrl(page, 'https://www.globalgiving.org/52013');
+    let projectTitleText = await (await (await page.$('h1')).getProperty('innerText')).jsonValue();
+    console.log(`Project title: ${projectTitleText}`);
+    !!browser && await browser.close();
+};
+
 export const scrapeUserData = async (startDate, endDate) => {
     // console.log(`promisePoller [type ${typeof promisePoller}]:`, promisePoller);
     let browser;
     let page;
+    let loginResult;
     let results;
     try {
-        console.log(`Loading url ${LOCAL_FILE_URL}...`);
-        ({browser, page} = await loadFile(LOCAL_FILE_URL));
-        // await screenshot(page, 'page');
-        /*({browser, page, result} = await performLogin());
-        if (!result) {
+        // console.log(`Loading url ${LOCAL_FILE_URL}...`);
+        // ({browser, page} = await loadFile(LOCAL_FILE_URL));
+        ({browser, page, loginResult} = await performLogin());
+        if (!loginResult) {
+            !!browser && await browser.close();
+        } else {
+            page = await gotoDashboard(page);
+            ({page, results} = await gatherUserData(page, startDate, endDate));
+            results = await processResults(page, results);
+            await writeResultsToFile(results, resultsFilename(endDate));
             !!browser && await browser.close();
         }
-        page = await gotoDashboard(page);*/
-        ({page, results} = await gatherUserData(page, startDate, endDate));
-        console.log('results before processing:', Object.entries(results));
-        console.log('Processing results...');
-        results = await processResults(page, results);
-        await writeResultsToFile(results, resultsFilename(endDate));
-        !!browser && await browser.close();
-
     } catch (e) {
         console.error("Error:", e);
         !!browser && await browser.close();
@@ -45,7 +54,7 @@ export const scrapeUserData = async (startDate, endDate) => {
 };
 
 const gotoDashboard = async (page) => {
-    await page.goto(DONATIONS_URL);
+    await gotoUrl(page, DONATIONS_URL);
     return page;
 };
 
@@ -128,19 +137,13 @@ const gatherUserData = async (page, startDate, endDate) => {
         }));
 
         console.log(`${pageResults.length} rows remain after reading and filtering.`);
-        /*let filteredResults = [];
-        for (const row of processedRows) {
-            let result = scrapeRow(row, page);
-            filteredResults.push(result);
-        }*/
-
-
         console.log(`Results from scraping page ${pageNumber}:\n${scrapeResultsString(pageResults)}`);
         console.log(`Adding ${pageResults.length} rows to results...`);
         results.push(...pageResults);
 
         shouldContinue = pageResults.length === numRows;
         if (shouldContinue) {
+            pageNumber++;
             await gotoNextUserDataPage(page);
         }
     }
