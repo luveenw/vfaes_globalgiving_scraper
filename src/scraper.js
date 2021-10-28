@@ -1,5 +1,6 @@
 import luxon from "luxon";
 import fspkg from 'fs';
+import {sep} from 'path';
 import puppeteer from 'puppeteer-extra';
 
 import {elementForQuery, gotoUrl, performLogin} from './pageHelpers.js';
@@ -43,9 +44,9 @@ export const scrapeUserData = async (startDate, endDate) => {
         } else {
             page = await gotoDashboard(page);
             ({page, results} = await gatherUserData(page, startDate, endDate));
-            results = await processResults(page, results);
-            await writeResultsToFile(results, resultsFilename(endDate));
             !!browser && await browser.close();
+            return await processResults(page, results);
+            // mailFile(resultsFilename);
         }
     } catch (e) {
         console.error("Error:", e);
@@ -58,18 +59,18 @@ const gotoDashboard = async (page) => {
     return page;
 };
 
-const writeResultsToFile = async (results, path) => {
+export const writeResultsToFile = async (results, path) => {
     let writeLines = [
-        () => fs.writeFile(`result\\${path}`, Object.values(RESULT_COLUMN_HEADERS).join(',')),
-        () => fs.appendFile(`result\\${path}`, '\n'),
-        () => fs.appendFile(`result\\${path}`, scrapeResultsString(results), err => !!err && console.log('Error writing results:', err)),
-        () => fs.appendFile(`result\\${path}`, '\n')
+        () => fs.writeFile(`result${sep}${path}`, Object.values(RESULT_COLUMN_HEADERS).join(',')),
+        () => fs.appendFile(`result${sep}${path}`, '\n'),
+        () => fs.appendFile(`result${sep}${path}`, scrapeResultsString(results), err => !!err && console.log('Error writing results:', err)),
+        () => fs.appendFile(`result${sep}${path}`, '\n')
     ];
     for (const line of writeLines) {
         await line();
     }
 };
-export const resultsFilename = date =>
+export const getResultsFilename = date =>
     `donations_ending_${date.toFormat(Y_M_D)}_${DateTime.now().toFormat(Y_M_D_TIME)}_${Math.floor(Math.random() * 9999)}.csv`;
 
 const areDatesEqual = (d1, d2) => d1.toMillis() === d2.toMillis();
@@ -110,7 +111,7 @@ const gatherUserData = async (page, startDate, endDate) => {
             let donationDateCol = await colElems[FIELD_COLUMN['donationDate']];
             // console.log(`Checking dateDonated for ${donationDateCol}...`);
             let dateDonated = await donationDate(donationDateCol);
-            let dateInRange = isDateBetween(dateDonated, startDate, endDate);
+            let dateInRange = isDateBetween(dateDonated, startDate, endDate, true);
             // console.log(`${dateDonated} in range: ${dateInRange}`);
             if (dateInRange) {
                 let scrapeObject = {};

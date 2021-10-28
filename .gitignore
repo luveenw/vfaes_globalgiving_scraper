@@ -1,3 +1,6 @@
+# Project-specific files
+result
+
 # Logs
 logs
 *.log
