@@ -114,9 +114,9 @@ const recurring = async (column) => {
 const recurringStatus = async (column) => {
     // console.log(`Evaluating recurring status for column ${column}...`);
     let rsTxt = await (await column.getProperty('innerText')).jsonValue();
-    console.log(`Original recurring status text: ${rsTxt}`);
+    // console.log(`Original recurring status text: ${rsTxt}`);
     let statusText = (!!rsTxt && rsTxt.indexOf('Yes') >= 0 && rsTxt.indexOf('(') >= 0) ? rsTxt.match(/\(.*\)/)[0].slice(1, -1) : '';
-    console.log(`Recurring status text: ${statusText}`);
+    // console.log(`Recurring status text: ${statusText}`);
     return statusText;
 };
 const totalAmount = async (column) => {
@@ -131,7 +131,7 @@ const currency = async (column) => {
     let totalAmtText = await (await column.getProperty('innerText')).jsonValue();
     let firstNumberIndex = DIGIT_REGEX.exec(totalAmtText).index;
     let currency = totalAmtText.slice(0, firstNumberIndex);
-    console.log(`Currency: ${currency}`);
+    // console.log(`Currency: ${currency}`);
     return currency;
 };
 const totalAmountUSD = async (column) => {

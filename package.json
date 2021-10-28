@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "description": "Scrape VFAES donor data from GlobalGiving",
   "type": "module",
+  "private": true,
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -16,6 +17,7 @@
   "author": "luveenw@gmail.com",
   "license": "ISC",
   "dependencies": {
+    "process": "latest",
     "luxon": "^2.0.2",
     "promise-poller": "1.8.0",
     "puppeteer-extra": "^3.1.18",

@@ -1,3 +1,4 @@
+import process from 'process';
 import * as fs from 'fs';
 import promisePoller from 'promise-poller';
 import puppeteer from 'puppeteer-extra';
@@ -32,22 +33,23 @@ export const screenshot = async (page, prefix) => {
 
 let timeout = ms => new Promise(resolve => setTimeout(resolve, ms));
 
-let solveCaptchas = async (page, retries = 3, interval = 1500, delay = 15000) => {
+let solveCaptchas = async (page, setMessage, retries = 3, interval = 1500, delay = 15000) => {
+    setMessage(`Waiting ${delay} milliseconds...`);
     await timeout(delay);
     return pollPromise({
-        taskFn: solveCaptchaTask(page),
+        taskFn: solveCaptchaTask(page, setMessage),
         interval,
         retries,
         progressCallback: (remaining, error) => {
-            console.log(`Attempt ${retries - remaining + 1} / ${retries} failed with error`, error);
+            setMessage(`Attempt ${retries - remaining + 1} / ${retries} failed with error`, error);
         }
     });
 };
 
-let solveCaptchaTask = page => {
+let solveCaptchaTask = (page, setMessage) => {
     return async function () {
         return new Promise(async function (resolve, reject) {
-            // console.log('Trying captcha...');
+            setMessage('Sending login captcha to app...');
             // await screenshot(page, 'before-solve-captchas');
             let response = await page.solveRecaptchas();
             // console.log('Captcha attempt response:', response);
@@ -58,7 +60,7 @@ let solveCaptchaTask = page => {
     }
 };
 
-export const performLogin = async () => {
+export const performLogin = async (setMessage) => {
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
 
@@ -68,14 +70,15 @@ export const performLogin = async () => {
     await page.type(consts.LOGIN_USERNAME_ID, consts.LOGIN_USERNAME, {delay: 100});
     elementForQuery(page, consts.LOGIN_PASSWORD_ID, true) &&
     await page.type(consts.LOGIN_PASSWORD_ID, consts.LOGIN_PASSWORD, {delay: 100});
-    let result = await solveCaptchas(page);
-    // console.log('result:', result);
+    setMessage('Trying captcha...');
+    let result = await solveCaptchas(page, setMessage);
+    setMessage('Finished working on captcha.');
 
     // await screenshot(page, 'after-solve-captchas');
 
     elementForQuery(page, consts.LOGIN_BUTTON_ID) &&
     await Promise.all([
-        page.waitForNavigation(),
+        page.waitForNavigation({}),
         page.click(consts.LOGIN_BUTTON_ID, {delay: 100, button: "left", clickCount: 1})
     ]);
 
