@@ -12,11 +12,11 @@ const SCRAPING_IN_PROGRESS_HTML = (startDate, endDate) => `<!DOCTYPE html>
     <head><title>Processing donor data from ${startDate.toFormat(Y_M_D)} to before ${endDate.toFormat(Y_M_D)}</title></head>
     <body>
         <ol>
-            <h2>🚀 Processing donor data from ${startDate.toFormat(Y_M_D)} to before ${endDate.toFormat(Y_M_D)} 🚀</h2>
+            <h2>🚀 Processing donor data from ${startDate.toFormat(Y_M_D)} to before ${endDate.toFormat(Y_M_D)}</h2>
             <div style="padding-top:14px;">Results will be emailed to 📪 <strong>${process.env.RECIPIENT_EMAILS}.</strong></div>
             <div style="padding-top:14px;">🕗 Depending on the specified date range, this could take a while.</div>
             <div>If the email hasn't arrived in an hour, please try again! 😊</div>
-            <h2 style="padding-top: 14px;">⚠ Please set up your captcha app so you can solve the GlobalGiving login captcha. ⚠</h2>
+            <h2 style="padding-top: 14px;">⚠ Please set up your captcha app so you can solve the GlobalGiving login captcha.</h2>
             <div>ℹ The login key for the captcha app is called TWO_CAPTCHA_TOKEN, and it can be found <a target="_blank" href="https://glitch.com/edit/#!/fortunate-likeable-confidence?path=.env">here</a>.</div>
             <h3>🔨 Desktop Captcha App Setup</h3>
             <ol>
