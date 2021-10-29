@@ -4,34 +4,24 @@ import express from 'express';
 import luxon from 'luxon';
 import {isDateAfter, isDateBetween, runScraper} from './src/scraper.js';
 import {emailAppError, emailResults, failuresString} from './src/mailer.js';
-import {DONATION_DATE_PATTERN, Y_M_D, Y_M_D_TIME_EMAIL} from './src/constants.js';
+import {Y_M_D} from './src/constants.js';
 
 const {DateTime} = luxon;
-
-const ERROR_HTML = (e) => `<!DOCTYPE html>
-<html lang="en-us">
-    <head><title>Scraping Error</title></head>
-    <body>
-        <h2>Error encountered</h2>
-        <div>${e}</div>
-    </body>
-</html>`;
-
 const SCRAPING_IN_PROGRESS_HTML = (startDate, endDate) => `<!DOCTYPE html>
 <html lang="en-us">
     <head><title>Processing donor data from ${startDate.toFormat(Y_M_D)} to before ${endDate.toFormat(Y_M_D)}</title></head>
     <body>
         <ol>
-            <h2>🚀 Processing donor data from ${startDate.toFormat(Y_M_D)} to before ${endDate.toFormat(Y_M_D)} 🚀</h2>
-            <div style="padding-top:14px;">Results will be emailed to 📪 ${process.env.RECIPIENT_EMAILS}</div>
-            <div>🕗 Depending on the specified date range, this could take a while.</div>
+            <h2>🚀 Processing donor data from ${startDate.toFormat(Y_M_D)} to before ${endDate.toFormat(Y_M_D)}</h2>
+            <div style="padding-top:14px;">Results will be emailed to 📪 <strong>${process.env.RECIPIENT_EMAILS}.</strong></div>
+            <div style="padding-top:14px;">🕗 Depending on the specified date range, this could take a while.</div>
             <div>If the email hasn't arrived in an hour, please try again! 😊</div>
-            <h2 style="padding-top: 14px;">⚠ Please set up your captcha app so you can solve the GlobalGiving login captcha. ⚠</h2>
+            <h2 style="padding-top: 14px;">⚠ Please set up your captcha app so you can solve the GlobalGiving login captcha.</h2>
             <div>ℹ The login key for the captcha app is called TWO_CAPTCHA_TOKEN, and it can be found <a target="_blank" href="https://glitch.com/edit/#!/fortunate-likeable-confidence?path=.env">here</a>.</div>
             <h3>🔨 Desktop Captcha App Setup</h3>
             <ol>
                 <li>Download the desktop captcha app <a target="_blank" href="https://github.com/rucaptcha/bot-x/releases/download/v0.52/x-bot-en-v0.52.zip">here (Windows only)</a></li>
-                <li>Extract the zip contents to your computer. Double click RuCaptchaBot.exe to start the app.</li>
+                <li>Extract the zip contents to your computer.</li>
                 <li>Double click RuCaptchaBot.exe to start the app.</li>
                 <li>On the screen titled <strong>Authorization</strong>, enter the key from <a target="_blank" href="https://glitch.com/edit/#!/fortunate-likeable-confidence?path=.env%3A6%3A52">TWO_CAPTCHA_TOKEN</a>.</li>
                 <li>Click <strong>Start</strong> to start receiving GlobalGiving login captchas.</li>
