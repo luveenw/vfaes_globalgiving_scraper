@@ -1,13 +1,11 @@
 import luxon from 'luxon';
 import process from 'process';
-import fspkg from 'fs';
-import {sep} from 'path';
+// import fspkg from 'fs';
 import {default as puppeteer} from 'puppeteer-extra';
 
-import {elementForQuery, gotoUrl, performLogin, timeout} from './pageHelpers.js';
+import {gotoUrl, performLogin, timeout} from './pageHelpers.js';
 import {
     COLUMN_FIELDS,
-    donationDate,
     FIELD_COLUMN,
     FIELD_SCRAPERS,
     PROCESSORS,
@@ -16,10 +14,12 @@ import {
 import {scrapeResult, scrapeResultsString} from './scrapeResult.js';
 
 import {
+    CONTINUE_SCRAPE,
     DONATIONS_URL,
+    DONATION_DATE_PATTERN,
     END_DATE,
-    NEXT_BUTTON_CLASS,
     START_DATE,
+    STOP_SCRAPE,
     TABLE_ROW_SELECTOR,
     TWO_CAPTCHA_TOKEN,
     Y_M_D,
@@ -28,7 +28,7 @@ import {
 import RecaptchaPlugin from "puppeteer-extra-plugin-recaptcha";
 import StealthPlugin from "puppeteer-extra-plugin-stealth";
 
-const fs = fspkg.promises;
+// const fs = fspkg.promises;
 const {DateTime} = luxon;
 
 export const testRedirects = async () => {
@@ -73,7 +73,6 @@ const scrapeUserData = async (startDate, endDate) => {
     try {
         // console.log(`Loading url ${LOCAL_FILE_URL}...`);
         // ({browser, page} = await loadFile(LOCAL_FILE_URL));
-        console.log('Logging in...');
         ({browser, page, loginResult} = await performLogin());
         if (!loginResult) {
             !!browser && await browser.close();
@@ -134,6 +133,7 @@ const gatherUserData = async (page, startDate, endDate) => {
         let filteredRows = await filterRows(tableRows, startDate, endDate);
         process.stdout.write(` ${filteredRows.length} are in range ${startDate.toFormat(Y_M_D)} - ${endDate.toFormat(Y_M_D)} \r`);
         console.log('\r');
+        let earliestDate = await donationDateFromRow(tableRows[tableRows.length - 1]);
         for (const row of filteredRows) {
             let scrapeObject = {};
             let colElems = await row.$$("td");
@@ -156,26 +156,48 @@ const gatherUserData = async (page, startDate, endDate) => {
         // console.log(`Adding ${pageResults.length} rows to results...`);
         results.push(...pageResults);
 
-        shouldContinue = pageResults.length === numRows;
-        if (shouldContinue) {
+        shouldContinue = isDateBetween(earliestDate, startDate, endDate);
+        console.log(`Earliest date found so far (${earliestDate.toFormat(Y_M_D)}) is ${!!shouldContinue ? CONTINUE_SCRAPE : STOP_SCRAPE}`);
+        if (!!shouldContinue) {
             await gotoDashboard(page, ++pageNumber);
         }
     }
     // console.log('results after reading and filtering:', Object.entries(results));
     return {page, results};
 };
+
+const donationDateFromRow = async (row) => {
+    let colElems = await row.$$("td");
+    let donationDateCol = await colElems[FIELD_COLUMN['donationDate']];
+    return await donationDateFromColumn(donationDateCol);
+};
+
+const donationDateFromColumn = async (column) => {
+    // console.log(`Evaluating donation date for column ${column}...`);
+    let dateText = await (await column.getProperty('innerText')).jsonValue();
+    // console.log(`Date column: "${dateText}" converts to -> `, date);
+    return DateTime.fromFormat(dateText, DONATION_DATE_PATTERN);
+};
+
+const areDatesEqual = (d1, d2) => d1.toMillis() === d2.toMillis();
+
+export const isDateBetween = (date, startDate, endDate, includeStart = true, includeEnd = false) => {
+    let isAtOrAfterStart = date > startDate || (includeStart && areDatesEqual(date, startDate));
+    let isAtOrBeforeEnd = date < endDate || (includeEnd && areDatesEqual(date, endDate));
+    return isAtOrAfterStart && isAtOrBeforeEnd;
+};
+
 const filterRows = async (tableRows, startDate, endDate) => {
     let rowsInRange = [];
     for (const row of tableRows) {
-        let colElems = await row.$$("td");
-        let donationDateCol = await colElems[FIELD_COLUMN['donationDate']];
-        let dateDonated = await donationDate(donationDateCol);
-        if (isDateBetween(dateDonated, startDate, endDate, true)) {
+        let dateDonated = await donationDateFromRow(row);
+        if (isDateBetween(dateDonated, startDate, endDate)) {
             rowsInRange.push(row);
         }
     }
     return rowsInRange;
 };
+
 const processResults = async (page, results) => {
     let processedResults = [];
     let counter = 0;
@@ -206,14 +228,6 @@ const gotoDashboard = async (page, pageNumber = 1) => {
 
 export const getResultsFilename = date =>
     `donations_ending_${date.toFormat(Y_M_D)}_${DateTime.now().toFormat(Y_M_D_TIME)}_${Math.floor(Math.random() * 9999)}.csv`;
-
-const areDatesEqual = (d1, d2) => d1.toMillis() === d2.toMillis();
-
-export const isDateBetween = (date, startDate, endDate, includeStart = false, includeEnd = false) => {
-    let isAtOrAfterStart = date > startDate || (includeStart && areDatesEqual(date, startDate));
-    let isAtOrBeforeEnd = date < endDate || (includeEnd && areDatesEqual(date, endDate));
-    return isAtOrAfterStart && isAtOrBeforeEnd;
-};
 
 /*const gotoNextUserDataPage = async page => {
     if (elementForQuery(page, NEXT_BUTTON_CLASS)) {

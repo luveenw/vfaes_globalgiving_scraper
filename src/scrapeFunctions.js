@@ -108,19 +108,11 @@ const trafficSource = async (column) => {
     // console.log(`Traffic source text: ${trafficSourceText}`);
     return await (await column.getProperty('innerText')).jsonValue();
 };
+
 const paymentMethod = async (column) => {
     // console.log(`Evaluating payment method for column ${column}...`);
     // console.log(`Payment method text: ${paymentMethodText}`);
     return await (await (await column.$('span.tinyCaption')).getProperty('innerText')).jsonValue();
-};
-
-const DONATION_DATE_PATTERN = 'MMM d, y';
-
-export const donationDate = async (column) => {
-    // console.log(`Evaluating donation date for column ${column}...`);
-    let dateText = await (await column.getProperty('innerText')).jsonValue();
-    // console.log(`Date column: "${dateText}" converts to -> `, date);
-    return DateTime.fromFormat(dateText, DONATION_DATE_PATTERN);
 };
 
 export const donationDateString = async (column) => {
