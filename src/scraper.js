@@ -4,7 +4,7 @@ import fspkg from 'fs';
 import {sep} from 'path';
 import {default as puppeteer} from 'puppeteer-extra';
 
-import {elementForQuery, gotoUrl, performLogin} from './pageHelpers.js';
+import {elementForQuery, gotoUrl, performLogin, timeout} from './pageHelpers.js';
 import {
     COLUMN_FIELDS,
     donationDate,
@@ -17,7 +17,9 @@ import {scrapeResult, scrapeResultsString} from './scrapeResult.js';
 
 import {
     DONATIONS_URL,
+    END_DATE,
     NEXT_BUTTON_CLASS,
+    START_DATE,
     TABLE_ROW_SELECTOR,
     TWO_CAPTCHA_TOKEN,
     Y_M_D,
@@ -50,18 +52,16 @@ export const runScraper = async () => {
     );
     puppeteer.use(StealthPlugin());
 
-    let endDate = DateTime.now();
-    let startDate = endDate.minus({months: 1});
-    let resultsFilename = '';
+    let endDate = END_DATE;
+    let startDate = START_DATE;
     // testRedirects().then(result => console.log("Result:", result)).catch(e => console.log("Error:", e));
-    await scrapeUserData(startDate, endDate)
-        .then(async (result) => {
-            resultsFilename = getResultsFilename(endDate);
-            await writeResultsToFile(result, resultsFilename);
-        })
-        .catch(e => console.log("Error:", e));
-    // while (true) {console.log(getResultsFilename(LocalDate.now()));}
-    return resultsFilename;
+    try {
+        let data = await scrapeUserData(startDate, endDate);
+        return {results: resultsString(data), resultsFilename: getResultsFilename(endDate)};
+    } catch (e) {
+        console.log("Error:", e);
+        return {results: '', resultsFilename: '', error: e};
+    }
 };
 
 const scrapeUserData = async (startDate, endDate) => {
@@ -94,7 +94,7 @@ const scrapeUserData = async (startDate, endDate) => {
     }
 };
 
-const writeResultsToFile = async (results, path) => {
+/*const writeResultsToFile = async (results, path) => {
     let filePath = `result${sep}${path}`;
     console.log(`Writing ${results.length} results to file ${filePath}`);
     let writeLines = [
@@ -106,7 +106,10 @@ const writeResultsToFile = async (results, path) => {
     for (const line of writeLines) {
         await line();
     }
-};
+};*/
+
+const resultsString = (results) =>
+    [Object.values(RESULT_COLUMN_HEADERS).join(','), scrapeResultsString(results), ''].join('\n');
 
 const gatherUserData = async (page, startDate, endDate) => {
     // for each page,
@@ -145,7 +148,7 @@ const gatherUserData = async (page, startDate, endDate) => {
                 }
             }
             pageResults.push(scrapeResult(scrapeObject));
-            process.stdout.write(`\rScraped ${++counter} / ${filteredRows.length} rows`);
+            process.stdout.write(`\rScraped ${++counter} rows`);
         }
         console.log('\r');
         // console.log(`${pageResults.length} rows remain after reading and filtering.`);
@@ -155,8 +158,7 @@ const gatherUserData = async (page, startDate, endDate) => {
 
         shouldContinue = pageResults.length === numRows;
         if (shouldContinue) {
-            pageNumber++;
-            await gotoNextUserDataPage(page);
+            await gotoDashboard(page, ++pageNumber);
         }
     }
     // console.log('results after reading and filtering:', Object.entries(results));
@@ -180,6 +182,7 @@ const processResults = async (page, results) => {
     for (const result of results) {
         let processedResult = {};
         for (const [field, processor] of Object.entries(PROCESSORS)) {
+            await timeout(300);
             // console.log(`Processed value ${processedValue} for ${field}`);
             processedResult[field] = await processor(page, result);
         }
@@ -196,8 +199,8 @@ const processResults = async (page, results) => {
     return processedResults;
 };
 
-const gotoDashboard = async (page) => {
-    await gotoUrl(page, DONATIONS_URL);
+const gotoDashboard = async (page, pageNumber = 1) => {
+    await gotoUrl(page, DONATIONS_URL(pageNumber));
     return page;
 };
 
@@ -206,19 +209,18 @@ export const getResultsFilename = date =>
 
 const areDatesEqual = (d1, d2) => d1.toMillis() === d2.toMillis();
 
-const isDateBetween = (date, startDate, endDate, includeStart = false, includeEnd = false) => {
+export const isDateBetween = (date, startDate, endDate, includeStart = false, includeEnd = false) => {
     let isAtOrAfterStart = date > startDate || (includeStart && areDatesEqual(date, startDate));
     let isAtOrBeforeEnd = date < endDate || (includeEnd && areDatesEqual(date, endDate));
     return isAtOrAfterStart && isAtOrBeforeEnd;
 };
 
-const gotoNextUserDataPage = async page => {
-    elementForQuery(page, NEXT_BUTTON_CLASS) &&
-    await Promise.all([
-        page.waitForNavigation(),
-        page.click(NEXT_BUTTON_CLASS, {delay: 100, button: "left", clickCount: 1})
-    ]);
-};
-
-
-
+/*const gotoNextUserDataPage = async page => {
+    if (elementForQuery(page, NEXT_BUTTON_CLASS)) {
+        let a = await page.$(NEXT_BUTTON_CLASS);
+        await Promise.all([
+            page.waitForNavigation(),
+            a.click({delay: 100, button: "left", clickCount: 1})
+        ]);
+    }
+};*/

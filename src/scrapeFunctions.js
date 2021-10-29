@@ -1,4 +1,4 @@
-import luxon from "luxon";
+import luxon from 'luxon';
 
 import {
     DECIMAL_OR_INTEGER_REGEX,
@@ -7,7 +7,7 @@ import {
     DONOR_EMAIL_TEXT_ID,
     GLOBALGIVING_URL
 } from './constants.js';
-import {gotoUrl} from './pageHelpers.js';
+import {elementForQuery, gotoUrl} from './pageHelpers.js';
 
 // import * as fs from "fs";
 
@@ -15,19 +15,29 @@ const {DateTime} = luxon;
 
 const donationId = async (column) => {
     // console.log(`Evaluating donation ID for column ${column}...`);
-    let donorProfilePath = await column.$eval('a', el => el.getAttribute("href"));
+    let result = '';
+    let link = await elementForQuery(column, 'a');
+    if(!!link) {
+        let donorProfilePath = await column.$eval('a', el => el.getAttribute("href"));
+        let matches = donorProfilePath.match(DONATION_ID_REGEX);
+        if(!!matches) {
+            let donationIdKeyValue = matches[0];
+            let keyAndValue = donationIdKeyValue.split('=');
+            if(keyAndValue.length === 2) {
+                result = keyAndValue[1];
+            }
+        }
+    }
     // console.log(`Donor email link: "${donorProfilePath}"`);
     // console.log(`Extracting donation ID from ${donorProfilePath}...`);
-    let donationIdKeyValue = donorProfilePath.match(DONATION_ID_REGEX)[0];
     // let donationIdText = donationIdKeyValue.split('=')[1];
     // console.log(`Donation ID: ${donationIdText}`);
-    return donationIdKeyValue.split('=')[1];
+    return result;
 };
 const projectId = async (column) => {
     // console.log(`Evaluating project link for column ${column}...`);
-    let projectIdText = await (await (await column.$('a')).getProperty('innerText')).jsonValue();
     // console.log(`Project ID: ${projectIdText}`);
-    return projectIdText;
+    return await (await (await column.$('a')).getProperty('innerText')).jsonValue();
 };
 const projectLink = async (column) => {
     // console.log(`Evaluating project link for column ${column}...`);
@@ -63,17 +73,30 @@ const donorName = async (column) => {
 const donorProfileLink = async (column) => {
     // console.log(`Evaluating donor email link for column ${column}...`);
     // console.log(`Donor email link node HTML: ${await (await column.getProperty('innerHTML')).jsonValue()}`);
-    let donorProfilePath = await column.$eval('a', el => el.getAttribute("href"));
+    let result = '';
+    let elem = await column.$('a');
+    if (!!elem) {
+        let classes = (await (await elem.getProperty('className')).jsonValue()).split(' ');
+        let hasEmail = classes.includes('email');
+        if (hasEmail) {
+            let donorProfilePath = await column.$eval('a', el => el.getAttribute("href"));
+            result = GLOBALGIVING_URL + donorProfilePath;
+        }
+    }
     // console.log(`Donor email path text: ${donorProfilePath}`);
-    return GLOBALGIVING_URL + donorProfilePath;
+    return result;
 };
 const donorEmail = async (page, result) => {
     // console.log(`Extracting donor email using url ${result.donorProfileLink}...`);
-    await gotoUrl(page, result.donorProfileLink);
-    // REPLACE WITH THIS REAL PAGE NAV CODE
-    // await page.setContent(fs.readFileSync(LOCAL_DONOR_PROFILE_URL).toString());
-    // await page.$("body");
-    return await page.$eval(DONOR_EMAIL_TEXT_ID, el => el.getAttribute("value")) || '';
+    let email = '';
+    if (!!result.donorProfileLink) {
+        await gotoUrl(page, result.donorProfileLink);
+        // REPLACE WITH THIS REAL PAGE NAV CODE
+        // await page.setContent(fs.readFileSync(LOCAL_DONOR_PROFILE_URL).toString());
+        // await page.$("body");
+        email = await page.$eval(DONOR_EMAIL_TEXT_ID, el => el.getAttribute("value")) || '';
+    }
+    return email;
 };
 const trafficSource = async (column) => {
     // console.log(`Evaluating traffic source for column ${column}...`);
@@ -83,18 +106,16 @@ const trafficSource = async (column) => {
 };
 const paymentMethod = async (column) => {
     // console.log(`Evaluating payment method for column ${column}...`);
-    let paymentMethodText = await (await (await column.$('span.tinyCaption')).getProperty('innerText')).jsonValue();
     // console.log(`Payment method text: ${paymentMethodText}`);
-    return paymentMethodText;
+    return await (await (await column.$('span.tinyCaption')).getProperty('innerText')).jsonValue();
 };
 
-const DONATION_DATE_PATTERN = 'MMM dd, y';
+const DONATION_DATE_PATTERN = 'MMM d, y';
 
 export const donationDate = async (column) => {
     // console.log(`Evaluating donation date for column ${column}...`);
     let dateText = await (await column.getProperty('innerText')).jsonValue();
-    // console.log(`Date column: "${dateText}"`);
-    // console.log(`Extracting donation date from text ${dateText}...`);
+    // console.log(`Date column: "${dateText}" converts to -> `, date);
     return DateTime.fromFormat(dateText, DONATION_DATE_PATTERN);
 };
 
@@ -115,32 +136,28 @@ const recurringStatus = async (column) => {
     // console.log(`Evaluating recurring status for column ${column}...`);
     let rsTxt = await (await column.getProperty('innerText')).jsonValue();
     // console.log(`Original recurring status text: ${rsTxt}`);
-    let statusText = (!!rsTxt && rsTxt.indexOf('Yes') >= 0 && rsTxt.indexOf('(') >= 0) ? rsTxt.match(/\(.*\)/)[0].slice(1, -1) : '';
     // console.log(`Recurring status text: ${statusText}`);
-    return statusText;
+    return (!!rsTxt && rsTxt.indexOf('Yes') >= 0 && rsTxt.indexOf('(') >= 0) ? rsTxt.match(/\(.*\)/)[0].slice(1, -1) : '';
 };
 const totalAmount = async (column) => {
     let totalAmtText = await (await column.getProperty('innerText')).jsonValue();
     let regexMatch = DECIMAL_OR_INTEGER_REGEX.exec(totalAmtText)[0];
     // console.log(`Looked for number in ${totalAmtText}, found ${regexMatch}`);
-    let totalAmt = JSON.parse(regexMatch);
     // console.log(`Total amount: ${totalAmt}`);
-    return totalAmt;
+    return JSON.parse(regexMatch);
 };
 const currency = async (column) => {
     let totalAmtText = await (await column.getProperty('innerText')).jsonValue();
     let firstNumberIndex = DIGIT_REGEX.exec(totalAmtText).index;
-    let currency = totalAmtText.slice(0, firstNumberIndex);
     // console.log(`Currency: ${currency}`);
-    return currency;
+    return totalAmtText.slice(0, firstNumberIndex);
 };
 const totalAmountUSD = async (column) => {
     let totalAmtText = await (await column.getProperty('innerText')).jsonValue();
     let regexMatch = DECIMAL_OR_INTEGER_REGEX.exec(totalAmtText)[0];
     // console.log(`Looked for number in ${totalAmtText}, found ${regexMatch}`);
-    let totalAmt = JSON.parse(regexMatch);
     // console.log(`Total amount in USD: ${totalAmt}`);
-    return totalAmt;
+    return JSON.parse(regexMatch);
 };
 
 export const FIELD_SCRAPERS = {

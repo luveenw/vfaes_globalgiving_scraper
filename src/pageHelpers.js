@@ -7,10 +7,7 @@ import * as consts from './constants.js';
 export const elementForQuery = async (page, selector, debug = false) => {
     // debug && console.log(`Finding ${selector}...`);
     let a = await page.$(selector);
-    if (!a) {
-        throw new Error(`No element found for selector ${selector} on page`);
-    }
-    return a;
+    return !!a;
 };
 
 const sliceStr = s => `0${s}`.slice(-2);
@@ -30,9 +27,9 @@ export const screenshot = async (page, prefix) => {
     await page.screenshot(options);
 };
 
-let timeout = ms => new Promise(resolve => setTimeout(resolve, ms));
+export const timeout = ms => new Promise(resolve => setTimeout(resolve, ms));
 
-let solveCaptchas = async (page, retries = 3, interval = 1500, delay = 15000) => {
+let solveCaptchas = async (page, retries = 3, interval = 1500, delay = 5000) => {
     console.log(`Waiting ${delay} milliseconds...`);
     await timeout(delay);
     return pollPromise({

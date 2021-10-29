@@ -1,6 +1,8 @@
 import process from 'process';
+import luxon from 'luxon';
 import {default as dotenv} from 'dotenv';
 
+const {DateTime} = luxon;
 dotenv.config();
 
 // GlobalGiving
@@ -12,7 +14,7 @@ export const LOGIN_USERNAME_ID = '#login_email';
 export const LOGIN_PASSWORD_ID = '#passwd';
 export const LOGIN_BUTTON_ID = '#login_button';
 export const LOGGED_IN_URL = 'https://www.globalgiving.org/';
-export const DONATIONS_URL = 'https://www.globalgiving.org/dy/v2/pe/manage/donations.html?organization.id=50094';
+export const DONATIONS_URL = (page = 1) => `https://www.globalgiving.org/dy/v2/pe/manage/donations.html?organization.id=50094&d-3999764-p=${page}`;
 export const TABLE_ROW_SELECTOR = '#donation tbody tr';
 export const NEXT_BUTTON_CLASS = 'a.next';
 export const DONOR_EMAIL_TEXT_ID = 'input#thankyou_to';
@@ -22,6 +24,9 @@ export const DECIMAL_OR_INTEGER_REGEX = /([0-9]+\.[0-9]+)|([0-9]+)/;
 export const Y_M_D = 'yyyy-MM-dd';
 export const Y_M_D_TIME = `${Y_M_D}_HH.mm.ss.SSS`;
 
+// scraping variables
+export const END_DATE = !!process.env.END_DATE ? DateTime.fromFormat(process.env.END_DATE, Y_M_D) : DateTime.now();
+export const START_DATE = !!process.env.START_DATE ? DateTime.fromFormat(process.env.START_DATE, Y_M_D) : END_DATE.minus({months: 1});
 
 // 2captcha
 export const TWO_CAPTCHA_TOKEN = process.env.TWO_CAPTCHA_TOKEN;
