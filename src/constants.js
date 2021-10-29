@@ -24,6 +24,7 @@ export const DECIMAL_OR_INTEGER_REGEX = /([0-9]+\.[0-9]+)|([0-9]+)/;
 export const DONATION_DATE_PATTERN = 'MMM d, y';
 export const Y_M_D = 'yyyy-MM-dd';
 export const Y_M_D_TIME = `${Y_M_D}_HH.mm.ss.SSS`;
+export const Y_M_D_TIME_EMAIL = `${Y_M_D} HH:mm:ss`;
 
 // scraping variables
 export const END_DATE = DateTime.now();
