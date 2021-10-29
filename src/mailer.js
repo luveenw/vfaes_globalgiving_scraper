@@ -49,7 +49,7 @@ Generated at ${DateTime.now().toFormat(Y_M_D_TIME_EMAIL)}`;
     });
 };
 
-export const emailAppError = (r, startDate, endDate) => {
+export const emailAppError = (e, startDate, endDate) => {
     let mainEmailText = `An error was encountered while generating donor data for ${dateRangeStr}. Please try again!
 This email was generated at ${DateTime.now().toFormat(Y_M_D_TIME_EMAIL)}.`;
     sendMail({
@@ -59,8 +59,8 @@ This email was generated at ${DateTime.now().toFormat(Y_M_D_TIME_EMAIL)}.`;
         subject: `[ERROR] VFAES GlobalGiving Donor Data (${dateRangeStr(startDate, endDate)})`,
         text: `${mainEmailText}
         
-        Error: ${r.error}
+        Error: ${e}
         
-        Stacktrace: ${r.error.stack}`,
+        Stacktrace: ${e.stack}`,
     });
 };
