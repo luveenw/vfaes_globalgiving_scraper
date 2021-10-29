@@ -1,5 +1,4 @@
 import luxon from 'luxon';
-import process from 'process';
 // import fspkg from 'fs';
 import {default as puppeteer} from 'puppeteer-extra';
 
@@ -124,13 +123,12 @@ const gatherUserData = async (page, startDate, endDate) => {
         let tableRows = await page.$$(TABLE_ROW_SELECTOR);
         let pageResults = [];
         numRows = tableRows.length;
-        process.stdout.write(`Page ${pageNumber}: ${numRows} rows found.\r`);
+        console.log(`Page ${pageNumber}: ${numRows} rows found.`);
         if (numRows === 0) {
             break;
         }
         let filteredRows = await filterRows(tableRows, startDate, endDate);
-        process.stdout.write(` ${filteredRows.length} are in range ${startDate.toFormat(Y_M_D)} - ${endDate.toFormat(Y_M_D)} \r`);
-        console.log('\r');
+        console.log(` ${filteredRows.length} are in range ${startDate.toFormat(Y_M_D)} - ${endDate.toFormat(Y_M_D)}`);
         let earliestDate = await donationDateFromRow(tableRows[tableRows.length - 1]);
         for (const row of filteredRows) {
             let scrapeObject = {};
@@ -153,9 +151,11 @@ const gatherUserData = async (page, startDate, endDate) => {
         // console.log(`Adding ${pageResults.length} rows to results...`);
         results.push(...pageResults);
 
-        shouldContinue = isDateBetween(earliestDate, startDate, endDate);
-        console.log(`Earliest date found so far (${earliestDate.toFormat(Y_M_D)}) is ${!!shouldContinue ? CONTINUE_SCRAPE : STOP_SCRAPE}`);
+        shouldContinue = isDateAfter(earliestDate, endDate) || isDateBetween(earliestDate, startDate, endDate, true, true);
+        console.log(`Earliest date found so far: ${earliestDate.toFormat(Y_M_D)}. ${!!shouldContinue ? CONTINUE_SCRAPE : STOP_SCRAPE}`);
         if (!!shouldContinue) {
+            console.log('Waiting 3 seconds before going to next page...');
+            await timeout(3000);
             await gotoDashboard(page, ++pageNumber);
         }
     }
@@ -177,6 +177,8 @@ const donationDateFromColumn = async (column) => {
 };
 
 const areDatesEqual = (d1, d2) => d1.toMillis() === d2.toMillis();
+
+export const isDateAfter = (date, endDate) => date > endDate;
 
 export const isDateBetween = (date, startDate, endDate, includeStart = true, includeEnd = false) => {
     let isAtOrAfterStart = date > startDate || (includeStart && areDatesEqual(date, startDate));
