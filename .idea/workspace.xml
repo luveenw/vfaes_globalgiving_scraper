@@ -4,14 +4,9 @@
     <bookmark url="file://$PROJECT_DIR$/src/scraper.js" line="35" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c299b688-86fb-4681-a688-c65e4b54dbb6" name="Default Changelist" comment="Attempt to fix donor email field not existing">
+    <list default="true" id="c299b688-86fb-4681-a688-c65e4b54dbb6" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/constants.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/constants.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pageHelpers.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pageHelpers.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/scrapeFunctions.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/scrapeFunctions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/scraper.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/scraper.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -25,10 +20,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/package.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="528">
+            <state relative-caret-position="506">
               <caret line="24" column="9" selection-start-line="24" selection-start-column="9" selection-end-line="24" selection-end-column="9" />
             </state>
           </provider>
@@ -66,44 +61,12 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/donations.csv">
-          <provider selected="true" editor-type-id="csv-text-editor">
-            <state relative-caret-position="88">
-              <caret line="4" column="54" selection-start-line="4" selection-start-column="49" selection-end-line="4" selection-end-column="54" />
-            </state>
-          </provider>
-          <provider editor-type-id="csv-table-editor">
-            <state showInfoPanel="true" fixedHeaders="false" rowLines="3">
-              <column index="0" width="100" />
-              <column index="1" width="100" />
-              <column index="2" width="100" />
-              <column index="3" width="100" />
-              <column index="4" width="100" />
-              <column index="5" width="100" />
-              <column index="6" width="100" />
-              <column index="7" width="100" />
-              <column index="8" width="100" />
-              <column index="9" width="100" />
-              <column index="10" width="100" />
-              <column index="11" width="100" />
-              <column index="12" width="100" />
-              <column index="13" width="100" />
-              <column index="14" width="100" />
-              <column index="15" width="100" />
-              <column index="16" width="100" />
-              <column index="17" width="100" />
-              <column index="18" width="100" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="366">
-              <caret line="37" column="64" lean-forward="true" selection-start-line="37" selection-start-column="64" selection-end-line="37" selection-end-column="64" />
+            <state relative-caret-position="593">
+              <caret line="54" column="3" selection-start-line="54" selection-start-column="3" selection-end-line="54" selection-end-column="3" />
               <folding>
-                <element signature="e#20#50#0" expanded="true" />
+                <element signature="e#20#33#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -121,7 +84,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/pageHelpers.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="520">
@@ -154,6 +117,15 @@
           </provider>
         </entry>
       </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="276">
+              <caret line="74" column="4" lean-forward="true" selection-start-line="74" selection-start-column="4" selection-end-line="74" selection-end-column="4" />
+            </state>
+          </provider>
+        </entry>
+      </file>
     </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
@@ -166,7 +138,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>write</find>
       <find>timeout</find>
       <find>donorEmail</find>
       <find>PROCESSORS</find>
@@ -196,6 +167,7 @@
       <find>ogging</find>
       <find>loggingin</find>
       <find>logging</find>
+      <find>env</find>
     </findStrings>
     <replaceStrings>
       <replace>'</replace>
@@ -226,13 +198,13 @@
         <option value="$PROJECT_DIR$/src/mailer.js" />
         <option value="$PROJECT_DIR$/src/index.js" />
         <option value="$PROJECT_DIR$/.gitignore" />
-        <option value="$PROJECT_DIR$/package.json" />
-        <option value="$PROJECT_DIR$/.env" />
         <option value="$PROJECT_DIR$/src/scrapeFunctions.js" />
-        <option value="$PROJECT_DIR$/index.js" />
         <option value="$PROJECT_DIR$/src/constants.js" />
         <option value="$PROJECT_DIR$/src/scraper.js" />
         <option value="$PROJECT_DIR$/src/pageHelpers.js" />
+        <option value="$PROJECT_DIR$/index.js" />
+        <option value="$PROJECT_DIR$/.env" />
+        <option value="$PROJECT_DIR$/package.json" />
       </list>
     </option>
   </component>
@@ -350,7 +322,7 @@
       <workItem from="1631298286243" duration="13304000" />
       <workItem from="1635255243079" duration="100782000" />
       <workItem from="1635448799526" duration="25615000" />
-      <workItem from="1635480061172" duration="9895000" />
+      <workItem from="1635480061172" duration="11247000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit - local test data being scraped">
       <created>1635323936934</created>
@@ -422,17 +394,31 @@
       <option name="project" value="LOCAL" />
       <updated>1635485739804</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="* Fix &quot;continue scraping&quot; check&#10;* Remove unneeded puppeteer dep&#10;* Better log messages">
+      <created>1635523809024</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1635523809024</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Listen on port specified in .env">
+      <created>1635524701807</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1635524701807</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="186752000" />
+    <option name="totallyTimeSpent" value="188104000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="2576" height="1416" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.499388" visible="true" weight="0.15302067" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.499388" visible="true" weight="0.15302067" />
       <window_info id="Structure" order="1" sideWeight="0.500612" side_tool="true" weight="0.15302067" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="aws.explorer" order="3" side_tool="true" />
@@ -441,7 +427,7 @@
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32936507" />
       <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49920508" weight="0.33650795" />
-      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.3515873" />
+      <window_info anchor="bottom" id="Debug" order="3" visible="true" weight="0.3515873" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -517,7 +503,9 @@
     <MESSAGE value="* Use babel so requires can be imports&#10;* Move sensitive info to .env&#10;* Remove setMessage" />
     <MESSAGE value="* Add express.js endpoints for scraping, testing!&#10;* Read start, end dates from .env&#10;* Fix navigating multiple pages&#10;* Fix donation date parse pattern&#10;* Allow for more variants of donor email, donor profile link, donation ID&#10;* elementForQuery returns true/false for whether the element exists&#10;* Wait 5s instead of 15s before solving captcha" />
     <MESSAGE value="Attempt to fix donor email field not existing" />
-    <option name="LAST_COMMIT_MESSAGE" value="Attempt to fix donor email field not existing" />
+    <MESSAGE value="* Fix &quot;continue scraping&quot; check&#10;* Remove unneeded puppeteer dep&#10;* Better log messages" />
+    <MESSAGE value="Listen on port specified in .env" />
+    <option name="LAST_COMMIT_MESSAGE" value="Listen on port specified in .env" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -651,13 +639,6 @@
     <entry file="file://$PROJECT_DIR$/result/donations_ending_2021-10-27_2021-10-27_20.50.45.815_7330.csv" />
     <entry file="file://$PROJECT_DIR$/src/mailer.js" />
     <entry file="file://$PROJECT_DIR$/vfaes-globalgiving-scraper-8947503bea52.json" />
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="22">
-          <caret line="1" column="6" selection-start-line="1" selection-start-column="6" selection-end-line="1" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/scrapeResult.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="660">
@@ -805,36 +786,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/package.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="528">
-          <caret line="24" column="9" selection-start-line="24" selection-start-column="9" selection-end-line="24" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.env">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="88">
-          <caret line="4" column="21" selection-start-line="4" selection-start-column="21" selection-end-line="4" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/scrapeFunctions.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="268">
           <caret line="159" column="30" lean-forward="true" selection-start-line="159" selection-start-column="30" selection-end-line="159" selection-end-column="30" />
           <folding>
             <element signature="e#0#26#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="366">
-          <caret line="37" column="64" lean-forward="true" selection-start-line="37" selection-start-column="64" selection-end-line="37" selection-end-column="64" />
-          <folding>
-            <element signature="e#20#50#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -867,6 +824,37 @@
           <folding>
             <element signature="e#0#25#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="276">
+          <caret line="74" column="4" lean-forward="true" selection-start-line="74" selection-start-column="4" selection-end-line="74" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.env">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="88">
+          <caret line="4" column="21" selection-start-line="4" selection-start-column="21" selection-end-line="4" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="593">
+          <caret line="54" column="3" selection-start-line="54" selection-start-column="3" selection-end-line="54" selection-end-column="3" />
+          <folding>
+            <element signature="e#20#33#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="506">
+          <caret line="24" column="9" selection-start-line="24" selection-start-column="9" selection-end-line="24" selection-end-column="9" />
         </state>
       </provider>
     </entry>
