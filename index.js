@@ -35,7 +35,7 @@ app.get('/scrape', (req, res) => {
             console.log('Error:', r.error);
             res.send(ERROR_HTML(r.error));
         } else {
-            // console.log("Writing results:", r.results);
+            console.log("Sending results file to browser for download...");
             res.header('Content-Type', 'text/csv');
             res.attachment(r.resultsFilename);
             res.send(r.results);
@@ -48,7 +48,7 @@ app.get('/test', (req, res) => {
     let date = DateTime.fromFormat('2020-09-29', Y_M_D);
     let startDate = DateTime.fromFormat('2020-09-28', Y_M_D);
     let endDate = DateTime.fromFormat('2021-10-29', Y_M_D);
-    console.log('is date in range?', isDateBetween(date, startDate, endDate, true));
+    console.log('is date in range?', isDateBetween(date, startDate, endDate));
 });
 
 app.listen(3001, () =>

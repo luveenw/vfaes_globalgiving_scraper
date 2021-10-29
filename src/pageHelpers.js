@@ -30,7 +30,7 @@ export const screenshot = async (page, prefix) => {
 export const timeout = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 let solveCaptchas = async (page, retries = 3, interval = 1500, delay = 5000) => {
-    console.log(`Waiting ${delay} milliseconds...`);
+    console.log(`Waiting ${delay / 1000.0} seconds...`);
     await timeout(delay);
     return pollPromise({
         taskFn: solveCaptchaTask(page),
@@ -60,10 +60,13 @@ export const performLogin = async () => {
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
 
+    console.log(`Going to login page (${consts.LOGIN_URL})...`);
     await gotoUrl(page, consts.LOGIN_URL);
 
+    console.log(`Entering username...`);
     elementForQuery(page, consts.LOGIN_USERNAME_ID, true) &&
     await page.type(consts.LOGIN_USERNAME_ID, consts.LOGIN_USERNAME, {delay: 100});
+    console.log(`Entering password...`);
     elementForQuery(page, consts.LOGIN_PASSWORD_ID, true) &&
     await page.type(consts.LOGIN_PASSWORD_ID, consts.LOGIN_PASSWORD, {delay: 100});
     console.log('Trying captcha...');
