@@ -1,31 +1,33 @@
 #!/usr/bin/env node
 import process from 'process';
 import express from 'express';
-import nodemailer from 'nodemailer';
 import luxon from 'luxon';
 import {isDateAfter, isDateBetween, runScraper} from './src/scraper.js';
-import {DONATION_DATE_PATTERN, SCRAPER_EMAIL_FROM, Y_M_D, Y_M_D_TIME_EMAIL} from './src/constants.js';
+import {emailAppError, emailResults, failuresString} from './src/mailer.js';
+import {DONATION_DATE_PATTERN, Y_M_D, Y_M_D_TIME_EMAIL} from './src/constants.js';
 
 const {DateTime} = luxon;
+
 const ERROR_HTML = (e) => `<!DOCTYPE html>
 <html lang="en-us">
-    <head></head>
+    <head><title>Scraping Error</title></head>
     <body>
         <h2>Error encountered</h2>
         <div>${e}</div>
     </body>
 </html>`;
+
 const SCRAPING_IN_PROGRESS_HTML = (startDate, endDate) => `<!DOCTYPE html>
 <html lang="en-us">
-    <head></head>
+    <head><title>Processing donor data from ${startDate.toFormat(Y_M_D)} to before ${endDate.toFormat(Y_M_D)}</title></head>
     <body>
         <ol>
             <h2>🚀 Processing donor data from ${startDate.toFormat(Y_M_D)} to before ${endDate.toFormat(Y_M_D)} 🚀</h2>
-            <div style="padding-top:14pxsetupin"s will be emailed to 📪 ${process.env.RECIPIENT_EMAILS}</div>
+            <div style="padding-top:14px;">Results will be emailed to 📪 ${process.env.RECIPIENT_EMAILS}</div>
             <div>🕗 Depending on the specified date range, this could take a while.</div>
             <div>If the email hasn't arrived in an hour, please try again! 😊</div>
             <h2 style="padding-top: 14px;">⚠ Please set up your captcha app so you can solve the GlobalGiving login captcha. ⚠</h2>
-            <div>ℹ The login key for the captcha app is called TWO_CAPTCHA_TOKEN, and it can be found <a target="_blank" href="https://glitch.com/edit/#!/fortunate-likeable-confidence?path=.env%3A6%3A52">here</a>.</div>
+            <div>ℹ The login key for the captcha app is called TWO_CAPTCHA_TOKEN, and it can be found <a target="_blank" href="https://glitch.com/edit/#!/fortunate-likeable-confidence?path=.env">here</a>.</div>
             <h3>🔨 Desktop Captcha App Setup</h3>
             <ol>
                 <li>Download the desktop captcha app <a target="_blank" href="https://github.com/rucaptcha/bot-x/releases/download/v0.52/x-bot-en-v0.52.zip">here (Windows only)</a></li>
@@ -68,7 +70,8 @@ app.get('/scrape', (req, res) => {
     runScraper(startDate, endDate).then(r => {
         if (!!r.error) {
             console.log('Error:', r.error);
-            res.send(ERROR_HTML(r.error));
+            console.log('Error stacktrace:', r.error.stack);
+            emailAppError(r, startDate, endDate);
         } else {
             // console.log('Sending results file to browser for download...');
             // res.header('Content-Type', 'text/csv');
@@ -81,45 +84,6 @@ app.get('/scrape', (req, res) => {
     });
     res.end();
 });
-
-const failuresString = failures => {
-    failures.map(({field, result}) => failureString(field, result)).join('\n');
-};
-const failureString = (f, r) =>
-    `Failed to process ${f} for donation ID ${r.donationId} on ${r.donationDate.toFormat(DONATION_DATE_PATTERN)} by ${r.donorName} of $${r.totalAmountUSD}`;
-
-const MAIL = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: process.env.GMAIL_USERNAME,
-        pass: process.env.GMAIL_PASSWORD,
-    }
-});
-
-const emailResults = (r, startDate, endDate) => {
-    let dateRangeStr = `${startDate.toFormat(Y_M_D)} to before ${endDate.toFormat(Y_M_D)}`;
-    let mainEmailText = `Donor data for ${dateRangeStr}. Generated at ${DateTime.now().toFormat(Y_M_D_TIME_EMAIL)}`;
-    let mailOptions = {
-        from: SCRAPER_EMAIL_FROM,
-        replyTo: process.env.REPLY_TO_EMAIL,
-        to: process.env.RECIPIENT_EMAILS,
-        subject: `VFAES GlobalGiving Donor Data (${dateRangeStr})`,
-        text: `${mainEmailText}\n\n${r.failures.length} Processing Failures:\n${failuresString(r.failures)}`,
-        attachments: [{
-            filename: r.resultsFilename,
-            content: r.results,
-            contentType: 'text/csv'
-        }]
-    };
-
-    MAIL.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            console.log('Error sending email:', error);
-        } else {
-            console.log('Email sent: ' + info.response);
-        }
-    });
-};
 
 app.get('/test', (req, res) => {
     let date = DateTime.fromFormat('2020-12-01', Y_M_D);
