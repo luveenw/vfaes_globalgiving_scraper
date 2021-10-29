@@ -19,7 +19,7 @@ export const failuresString = failures => {
 };
 const failureString = (f, r) =>
     `Failed to process ${f} for donation ID ${r.donationId} on ${r.donationDate.toFormat(DONATION_DATE_PATTERN)} \
-    by ${r.donorName} of $${r.totalAmountUSD}`;
+by ${r.donorName} of $${r.totalAmountUSD}`;
 
 const sendMail = (mailOptions) => {
     MAIL.sendMail(mailOptions, (error, info) => {
@@ -33,7 +33,7 @@ const sendMail = (mailOptions) => {
 
 export const emailResults = (r, startDate, endDate) => {
     let mainEmailText = `Donor data for ${dateRangeStr(startDate, endDate)}. \
-    Generated at ${DateTime.now().toFormat(Y_M_D_TIME_EMAIL)}`;
+Generated at ${DateTime.now().toFormat(Y_M_D_TIME_EMAIL)}`;
     let failuresText = !!r.failures && !!r.failures.length ? `\n\n${r.failures.length} Processing Failures:\\n\n${failuresString(r.failures)}` : '';
     sendMail({
         from: process.env.SCRAPER_EMAIL_FROM,
@@ -51,7 +51,7 @@ export const emailResults = (r, startDate, endDate) => {
 
 export const emailAppError = (r, startDate, endDate) => {
     let mainEmailText = `An error was encountered while generating donor data for ${dateRangeStr}. Please try again!
-    This email was generated at ${DateTime.now().toFormat(Y_M_D_TIME_EMAIL)}.`;
+This email was generated at ${DateTime.now().toFormat(Y_M_D_TIME_EMAIL)}.`;
     sendMail({
         from: process.env.SCRAPER_EMAIL_FROM,
         replyTo: process.env.REPLY_TO_EMAIL,
