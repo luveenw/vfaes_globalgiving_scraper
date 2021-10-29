@@ -59,9 +59,9 @@ app.get('/scrape', (req, res) => {
     res.send(SCRAPING_IN_PROGRESS_HTML(startDate, endDate));
     runScraper(startDate, endDate).then(r => {
         if (!!r.error) {
-            console.log('Error:', r.error);
+            console.log('Error during scraping:', r.error);
             console.log('Error stacktrace:', r.error.stack);
-            emailAppError(r, startDate, endDate);
+            emailAppError(r.error, startDate, endDate);
         } else {
             // console.log('Sending results file to browser for download...');
             // res.header('Content-Type', 'text/csv');
@@ -72,8 +72,11 @@ app.get('/scrape', (req, res) => {
             console.log(`Emailing results file to ${process.env.RECIPIENT_EMAILS}...`);
             emailResults(r, startDate, endDate);
         }
+    }).catch(e => {
+        console.log('Unknown error encountered:', e);
+        console.log('Error stacktrace:', e.stack);
+        emailAppError(e, startDate, endDate);
     });
-    res.end();
 });
 
 app.get('/test', (req, res) => {

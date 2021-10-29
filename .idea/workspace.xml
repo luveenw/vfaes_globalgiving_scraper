@@ -4,9 +4,10 @@
     <bookmark url="file://$PROJECT_DIR$/src/scraper.js" line="34" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c299b688-86fb-4681-a688-c65e4b54dbb6" name="Default Changelist" comment="Remove spaces in template strings">
+    <list default="true" id="c299b688-86fb-4681-a688-c65e4b54dbb6" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/mailer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/mailer.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -41,11 +42,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="330">
-              <caret line="15" column="121" selection-start-line="15" selection-start-column="121" selection-end-line="15" selection-end-column="121" />
+            <state relative-caret-position="480">
+              <caret line="77" column="17" selection-start-line="77" selection-start-column="17" selection-end-line="77" selection-end-column="17" />
               <folding>
                 <element signature="e#20#50#0" expanded="true" />
                 <element signature="n#style#0;n#div#0;n#ol#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -57,11 +58,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/mailer.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="568">
-              <caret line="55" column="14" selection-start-line="55" selection-start-column="14" selection-end-line="55" selection-end-column="14" />
+            <state relative-caret-position="612">
+              <caret line="63" column="24" selection-start-line="63" selection-start-column="24" selection-end-line="63" selection-end-column="24" />
               <folding>
                 <element signature="e#0#36#0" expanded="true" />
               </folding>
@@ -144,9 +145,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>are in rang</find>
-      <find>date</find>
-      <find>innertex</find>
       <find>scraped</find>
       <find>click</find>
       <find>.click</find>
@@ -174,6 +172,9 @@
       <find>SCRAPER_EMAIL</find>
       <find>failuresString</find>
       <find>generated at</find>
+      <find>processing</find>
+      <find>[error</find>
+      <find>emailAppError</find>
     </findStrings>
     <replaceStrings>
       <replace>'</replace>
@@ -209,8 +210,8 @@
         <option value="$PROJECT_DIR$/src/scraper.js" />
         <option value="$PROJECT_DIR$/src/constants.js" />
         <option value="$PROJECT_DIR$/.env" />
-        <option value="$PROJECT_DIR$/src/mailer.js" />
         <option value="$PROJECT_DIR$/index.js" />
+        <option value="$PROJECT_DIR$/src/mailer.js" />
       </list>
     </option>
   </component>
@@ -329,7 +330,7 @@
       <workItem from="1635255243079" duration="100782000" />
       <workItem from="1635448799526" duration="25615000" />
       <workItem from="1635480061172" duration="15887000" />
-      <workItem from="1635530147364" duration="13191000" />
+      <workItem from="1635530147364" duration="13782000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit - local test data being scraped">
       <created>1635323936934</created>
@@ -513,17 +514,38 @@
       <option name="project" value="LOCAL" />
       <updated>1635543951287</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="Update instructions HTML">
+      <created>1635545544181</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1635545544182</updated>
+    </task>
+    <task id="LOCAL-00028" summary="Moar update instructions HTML">
+      <created>1635545713085</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1635545713085</updated>
+    </task>
+    <task id="LOCAL-00029" summary="Don't console log processing failures string when no failures exist">
+      <created>1635545835045</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1635545835045</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="205935000" />
+    <option name="totallyTimeSpent" value="206526000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="2576" height="1416" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.499388" visible="true" weight="0.15421304" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.499388" visible="true" weight="0.15421304" />
       <window_info id="Structure" order="1" sideWeight="0.500612" side_tool="true" weight="0.15302067" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="aws.explorer" order="3" side_tool="true" />
@@ -531,7 +553,7 @@
       <window_info id="Favorites" order="5" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32936507" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49920508" visible="true" weight="0.33650795" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49920508" visible="true" weight="0.33650795" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3515873" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -598,9 +620,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Working, but getting net::ERR_ABORTED. Too many page navs in parallel?" />
-    <MESSAGE value="Working: Ported to sequential promises instead of Promise.all. Next page testing pending" />
-    <MESSAGE value="restructuring; prep for user-initiated scraping" />
     <MESSAGE value="add node version requirement to package.json" />
     <MESSAGE value="* Moved all scraping out of index.js&#10;* Added better logging&#10;* Prep for react" />
     <MESSAGE value="* Use babel so requires can be imports&#10;* Move sensitive info to .env" />
@@ -623,7 +642,10 @@
     <MESSAGE value="Add processing failures count to email" />
     <MESSAGE value="* Include processing errors in results email&#10;* Refactor mailing code into mailer.js" />
     <MESSAGE value="Remove spaces in template strings" />
-    <option name="LAST_COMMIT_MESSAGE" value="Remove spaces in template strings" />
+    <MESSAGE value="Update instructions HTML" />
+    <MESSAGE value="Moar update instructions HTML" />
+    <MESSAGE value="Don't console log processing failures string when no failures exist" />
+    <option name="LAST_COMMIT_MESSAGE" value="Don't console log processing failures string when no failures exist" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -892,16 +914,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/mailer.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="568">
-          <caret line="55" column="14" selection-start-line="55" selection-start-column="14" selection-end-line="55" selection-end-column="14" />
-          <folding>
-            <element signature="e#0#36#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/.env">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="22">
@@ -911,14 +923,24 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="15" column="121" selection-start-line="15" selection-start-column="121" selection-end-line="15" selection-end-column="121" />
+        <state relative-caret-position="480">
+          <caret line="77" column="17" selection-start-line="77" selection-start-column="17" selection-end-line="77" selection-end-column="17" />
           <folding>
             <element signature="e#20#50#0" expanded="true" />
             <element signature="n#style#0;n#div#0;n#ol#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#0;n#ol#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#1;n#ol#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#h2#1;n#ol#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/mailer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="612">
+          <caret line="63" column="24" selection-start-line="63" selection-start-column="24" selection-end-line="63" selection-end-column="24" />
+          <folding>
+            <element signature="e#0#36#0" expanded="true" />
           </folding>
         </state>
       </provider>
