@@ -23,6 +23,7 @@
     "promise-poller": "1.8.0",
     "express": "^4.17.1",
     "puppeteer": "^10.4.0",
+    "nodemailer": "^6.7.0",
     "puppeteer-extra": "^3.1.18",
     "puppeteer-extra-plugin-user-data-dir": "^2.3.1",
     "puppeteer-extra-plugin-user-preferences": "^2.3.1",
