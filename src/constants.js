@@ -31,6 +31,7 @@ export const END_DATE = DateTime.now();
 export const START_DATE = END_DATE.minus({months: 1});
 export const CONTINUE_SCRAPE = 'Looking for more data on next page';
 export const STOP_SCRAPE = 'Stopping scraping on this page';
+export const SCRAPER_EMAIL_FROM = 'gg_scraper+noreply@vfaes.org';
 
 // 2captcha
 export const TWO_CAPTCHA_TOKEN = process.env.TWO_CAPTCHA_TOKEN;

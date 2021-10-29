@@ -54,7 +54,11 @@ export const runScraper = async (startDate, endDate) => {
     // testRedirects().then(result => console.log("Result:", result)).catch(e => console.log("Error:", e));
     try {
         let data = await scrapeUserData(startDate, endDate);
-        return {results: resultsString(data), resultsFilename: getResultsFilename(endDate)};
+        return {
+            results: resultsString(data.results),
+            failures: data.failures,
+            resultsFilename: getResultsFilename(endDate)
+        };
     } catch (e) {
         console.log("Error:", e);
         return {results: '', resultsFilename: '', error: e};
@@ -80,7 +84,7 @@ const scrapeUserData = async (startDate, endDate) => {
             ({page, results} = await gatherUserData(page, startDate, endDate));
             let processedResults = await processResults(page, results);
             !!browser && await browser.close();
-            console.log(`Gathered ${processedResults.length} rows.`);
+            console.log(`Gathered ${processedResults.results.length} rows.`);
             return processedResults;
             // mailFile(resultsFilename);
         }
@@ -199,13 +203,18 @@ const filterRows = async (tableRows, startDate, endDate) => {
 
 const processResults = async (page, results) => {
     let processedResults = [];
+    let failures = [];
     let counter = 0;
     for (const result of results) {
         let processedResult = {};
         for (const [field, processor] of Object.entries(PROCESSORS)) {
-            await timeout(300);
-            // console.log(`Processed value ${processedValue} for ${field}`);
-            processedResult[field] = await processor(page, result);
+            try {
+                await timeout(300);
+                // console.log(`Processed value ${processedValue} for ${field}`);
+                processedResult[field] = await processor(page, result);
+            } catch (e) {
+                failures.push({result, field});
+            }
         }
         // console.log("result:", Object.entries(result));
         // console.log("processedResult:", Object.entries(processedResult));
@@ -216,7 +225,7 @@ const processResults = async (page, results) => {
         processedResults.push(result);
         console.log(`Processed ${++counter} / ${results.length} rows`);
     }
-    return processedResults;
+    return {results: processedResults, failures: failures};
 };
 
 const gotoDashboard = async (page, pageNumber = 1) => {

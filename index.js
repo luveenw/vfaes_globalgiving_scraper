@@ -4,7 +4,7 @@ import express from 'express';
 import nodemailer from 'nodemailer';
 import luxon from 'luxon';
 import {isDateAfter, isDateBetween, runScraper} from './src/scraper.js';
-import {Y_M_D, Y_M_D_TIME_EMAIL} from './src/constants.js';
+import {DONATION_DATE_PATTERN, SCRAPER_EMAIL_FROM, Y_M_D, Y_M_D_TIME_EMAIL} from './src/constants.js';
 
 const {DateTime} = luxon;
 const ERROR_HTML = (e) => `<!DOCTYPE html>
@@ -74,12 +74,19 @@ app.get('/scrape', (req, res) => {
             // res.header('Content-Type', 'text/csv');
             // res.attachment(r.resultsFilename);
             // res.send(r.results);
+            console.log('Processing failures:\n', failuresString(r.failures));
             console.log(`Emailing results file to ${process.env.RECIPIENT_EMAILS}...`);
             emailResults(r, startDate, endDate);
         }
     });
     res.end();
 });
+
+const failuresString = failures => {
+    failures.map(({field, result}) => failureString(field, result)).join('\n');
+};
+const failureString = (f, r) =>
+    `Failed to process ${f} for donation ID ${r.donationId} on ${r.donationDate.toFormat(DONATION_DATE_PATTERN)} by ${r.donorName} of $${r.totalAmountUSD}`;
 
 const MAIL = nodemailer.createTransport({
     service: 'gmail',
@@ -91,11 +98,13 @@ const MAIL = nodemailer.createTransport({
 
 const emailResults = (r, startDate, endDate) => {
     let dateRangeStr = `${startDate.toFormat(Y_M_D)} to before ${endDate.toFormat(Y_M_D)}`;
+    let mainEmailText = `Donor data for ${dateRangeStr}. Generated at ${DateTime.now().toFormat(Y_M_D_TIME_EMAIL)}`;
     let mailOptions = {
-        from: process.env.GMAIL_USERNAME,
+        from: SCRAPER_EMAIL_FROM,
+        replyTo: process.env.REPLY_TO_EMAIL,
         to: process.env.RECIPIENT_EMAILS,
         subject: `VFAES GlobalGiving Donor Data (${dateRangeStr})`,
-        text: `Donor data for ${dateRangeStr}. Generated at ${DateTime.now().toFormat(Y_M_D_TIME_EMAIL)}`,
+        text: `${mainEmailText}\n\nFailures:\n${failuresString(r.failures)}`,
         attachments: [{
             filename: r.resultsFilename,
             content: r.results,
