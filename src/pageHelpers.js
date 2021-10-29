@@ -7,10 +7,7 @@ import * as consts from './constants.js';
 export const elementForQuery = async (page, selector, debug = false) => {
     // debug && console.log(`Finding ${selector}...`);
     let a = await page.$(selector);
-    if (!a) {
-        throw `No element found for selector ${selector} on page`;
-    }
-    return a;
+    return !!a;
 };
 
 const sliceStr = s => `0${s}`.slice(-2);
@@ -30,9 +27,10 @@ export const screenshot = async (page, prefix) => {
     await page.screenshot(options);
 };
 
-let timeout = ms => new Promise(resolve => setTimeout(resolve, ms));
+export const timeout = ms => new Promise(resolve => setTimeout(resolve, ms));
 
-let solveCaptchas = async (page, retries = 3, interval = 1500, delay = 15000) => {
+let solveCaptchas = async (page, retries = 3, interval = 1500, delay = 5000) => {
+    console.log(`Waiting ${delay} milliseconds...`);
     await timeout(delay);
     return pollPromise({
         taskFn: solveCaptchaTask(page),
@@ -44,10 +42,10 @@ let solveCaptchas = async (page, retries = 3, interval = 1500, delay = 15000) =>
     });
 };
 
-let solveCaptchaTask = page => {
+let solveCaptchaTask = (page) => {
     return async function () {
         return new Promise(async function (resolve, reject) {
-            // console.log('Trying captcha...');
+            console.log('Sending login captcha to app...');
             // await screenshot(page, 'before-solve-captchas');
             let response = await page.solveRecaptchas();
             // console.log('Captcha attempt response:', response);
@@ -68,14 +66,15 @@ export const performLogin = async () => {
     await page.type(consts.LOGIN_USERNAME_ID, consts.LOGIN_USERNAME, {delay: 100});
     elementForQuery(page, consts.LOGIN_PASSWORD_ID, true) &&
     await page.type(consts.LOGIN_PASSWORD_ID, consts.LOGIN_PASSWORD, {delay: 100});
+    console.log('Trying captcha...');
     let result = await solveCaptchas(page);
-    // console.log('result:', result);
+    console.log('Finished working on captcha.');
 
     // await screenshot(page, 'after-solve-captchas');
 
     elementForQuery(page, consts.LOGIN_BUTTON_ID) &&
     await Promise.all([
-        page.waitForNavigation(),
+        page.waitForNavigation({}),
         page.click(consts.LOGIN_BUTTON_ID, {delay: 100, button: "left", clickCount: 1})
     ]);
 

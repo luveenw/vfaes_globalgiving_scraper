@@ -1,9 +1,10 @@
-import luxon from "luxon";
+import luxon from 'luxon';
+import process from 'process';
 import fspkg from 'fs';
 import {sep} from 'path';
-import puppeteer from 'puppeteer-extra';
+import {default as puppeteer} from 'puppeteer-extra';
 
-import {elementForQuery, gotoUrl, performLogin} from './pageHelpers.js';
+import {elementForQuery, gotoUrl, performLogin, timeout} from './pageHelpers.js';
 import {
     COLUMN_FIELDS,
     donationDate,
@@ -14,7 +15,18 @@ import {
 } from './scrapeFunctions.js';
 import {scrapeResult, scrapeResultsString} from './scrapeResult.js';
 
-import {DONATIONS_URL, LOCAL_FILE_URL, NEXT_BUTTON_CLASS, TABLE_ROW_SELECTOR, Y_M_D, Y_M_D_TIME} from './constants.js';
+import {
+    DONATIONS_URL,
+    END_DATE,
+    NEXT_BUTTON_CLASS,
+    START_DATE,
+    TABLE_ROW_SELECTOR,
+    TWO_CAPTCHA_TOKEN,
+    Y_M_D,
+    Y_M_D_TIME
+} from './constants.js';
+import RecaptchaPlugin from "puppeteer-extra-plugin-recaptcha";
+import StealthPlugin from "puppeteer-extra-plugin-stealth";
 
 const fs = fspkg.promises;
 const {DateTime} = luxon;
@@ -28,8 +40,31 @@ export const testRedirects = async () => {
     console.log(`Project title: ${projectTitleText}`);
     !!browser && await browser.close();
 };
+export const runScraper = async () => {
+    puppeteer.use(
+        RecaptchaPlugin({
+            provider: {
+                id: '2captcha',
+                token: TWO_CAPTCHA_TOKEN // REPLACE THIS WITH YOUR OWN 2CAPTCHA API KEY ⚡
+            },
+            visualFeedback: true // colorize reCAPTCHAs (violet = detected, green = solved)
+        })
+    );
+    puppeteer.use(StealthPlugin());
 
-export const scrapeUserData = async (startDate, endDate) => {
+    let endDate = END_DATE;
+    let startDate = START_DATE;
+    // testRedirects().then(result => console.log("Result:", result)).catch(e => console.log("Error:", e));
+    try {
+        let data = await scrapeUserData(startDate, endDate);
+        return {results: resultsString(data), resultsFilename: getResultsFilename(endDate)};
+    } catch (e) {
+        console.log("Error:", e);
+        return {results: '', resultsFilename: '', error: e};
+    }
+};
+
+const scrapeUserData = async (startDate, endDate) => {
     // console.log(`promisePoller [type ${typeof promisePoller}]:`, promisePoller);
     let browser;
     let page;
@@ -38,48 +73,43 @@ export const scrapeUserData = async (startDate, endDate) => {
     try {
         // console.log(`Loading url ${LOCAL_FILE_URL}...`);
         // ({browser, page} = await loadFile(LOCAL_FILE_URL));
+        console.log('Logging in...');
         ({browser, page, loginResult} = await performLogin());
         if (!loginResult) {
             !!browser && await browser.close();
         } else {
+            console.log('Logged in.');
             page = await gotoDashboard(page);
+            console.log('Gathering user data...');
             ({page, results} = await gatherUserData(page, startDate, endDate));
+            let processedResults = await processResults(page, results);
             !!browser && await browser.close();
-            return await processResults(page, results);
+            console.log(`Gathered ${processedResults.length} rows.`);
+            return processedResults;
             // mailFile(resultsFilename);
         }
     } catch (e) {
-        console.error("Error:", e);
+        console.log("Error:", e);
         !!browser && await browser.close();
     }
 };
 
-const gotoDashboard = async (page) => {
-    await gotoUrl(page, DONATIONS_URL);
-    return page;
-};
-
-export const writeResultsToFile = async (results, path) => {
+/*const writeResultsToFile = async (results, path) => {
+    let filePath = `result${sep}${path}`;
+    console.log(`Writing ${results.length} results to file ${filePath}`);
     let writeLines = [
-        () => fs.writeFile(`result${sep}${path}`, Object.values(RESULT_COLUMN_HEADERS).join(',')),
-        () => fs.appendFile(`result${sep}${path}`, '\n'),
-        () => fs.appendFile(`result${sep}${path}`, scrapeResultsString(results), err => !!err && console.log('Error writing results:', err)),
-        () => fs.appendFile(`result${sep}${path}`, '\n')
+        () => fs.writeFile(`${filePath}`, Object.values(RESULT_COLUMN_HEADERS).join(',')),
+        () => fs.appendFile(`${filePath}`, '\n'),
+        () => fs.appendFile(`${filePath}`, scrapeResultsString(results), err => !!err && console.log('Error writing results:', err)),
+        () => fs.appendFile(`${filePath}`, '\n')
     ];
     for (const line of writeLines) {
         await line();
     }
-};
-export const getResultsFilename = date =>
-    `donations_ending_${date.toFormat(Y_M_D)}_${DateTime.now().toFormat(Y_M_D_TIME)}_${Math.floor(Math.random() * 9999)}.csv`;
+};*/
 
-const areDatesEqual = (d1, d2) => d1.toMillis() === d2.toMillis();
-
-const isDateBetween = (date, startDate, endDate, includeStart = false, includeEnd = false) => {
-    let isAtOrAfterStart = date > startDate || (includeStart && areDatesEqual(date, startDate));
-    let isAtOrBeforeEnd = date < endDate || (includeEnd && areDatesEqual(date, endDate));
-    return isAtOrAfterStart && isAtOrBeforeEnd;
-};
+const resultsString = (results) =>
+    [Object.values(RESULT_COLUMN_HEADERS).join(','), scrapeResultsString(results), ''].join('\n');
 
 const gatherUserData = async (page, startDate, endDate) => {
     // for each page,
@@ -91,45 +121,36 @@ const gatherUserData = async (page, startDate, endDate) => {
     let shouldContinue = true;
     let pageNumber = 1;
     let numRows = 0;
+    let counter = 0;
     let results = [];
     while (shouldContinue) {
         let tableRows = await page.$$(TABLE_ROW_SELECTOR);
         let pageResults = [];
         numRows = tableRows.length;
-        // console.log(`${numRows} rows found.`);
+        process.stdout.write(`\rPage ${pageNumber}: ${numRows} rows found.`);
         if (numRows === 0) {
             break;
         }
-        // console.log(`Filtering rows by date...`);
-        /*let cols1 = await (await tableRows[0]).$$("td");
-        console.log(`Columns:${await cols1}`);
-        console.log(`Donation date column: ${cols1[5]}`);
-        console.log(`Donation date column value: ${await (await cols1[5].getProperty('innerText')).jsonValue()}`);*/
-        for (const row of tableRows) {
+        let filteredRows = await filterRows(tableRows, startDate, endDate);
+        process.stdout.write(` ${filteredRows.length} are in range ${startDate.toFormat(Y_M_D)} - ${endDate.toFormat(Y_M_D)} \r`);
+        console.log('\r');
+        for (const row of filteredRows) {
+            let scrapeObject = {};
             let colElems = await row.$$("td");
-            // console.log(`colElems: ${colElems}`);
-            let donationDateCol = await colElems[FIELD_COLUMN['donationDate']];
-            // console.log(`Checking dateDonated for ${donationDateCol}...`);
-            let dateDonated = await donationDate(donationDateCol);
-            let dateInRange = isDateBetween(dateDonated, startDate, endDate, true);
-            // console.log(`${dateDonated} in range: ${dateInRange}`);
-            if (dateInRange) {
-                let scrapeObject = {};
-                for (const index of colElems.keys()) {
-                    let fields = COLUMN_FIELDS[index];
-                    if (!!fields) {
-                        for (const field of fields) {
-                            // console.log(`Running scraper for ${field} column...`);
-                            let scrapedValue = await FIELD_SCRAPERS[field](colElems[FIELD_COLUMN[field]]);
-                            // console.log(`Scraped value ${scrapedValue} for ${field}`);
-                            scrapeObject[field] = scrapedValue;
-                        }
+            for (const index of colElems.keys()) {
+                let fields = COLUMN_FIELDS[index];
+                if (!!fields) {
+                    for (const field of fields) {
+                        // console.log(`Running scraper for ${field} column...`);
+                        // console.log(`Scraped value ${scrapedValue} for ${field}`);
+                        scrapeObject[field] = await FIELD_SCRAPERS[field](colElems[FIELD_COLUMN[field]]);
                     }
                 }
-                pageResults.push(scrapeResult(scrapeObject));
             }
+            pageResults.push(scrapeResult(scrapeObject));
+            process.stdout.write(`\rScraped ${++counter} rows`);
         }
-
+        console.log('\r');
         // console.log(`${pageResults.length} rows remain after reading and filtering.`);
         // console.log(`Results from scraping page ${pageNumber}:\n${scrapeResultsString(pageResults)}`);
         // console.log(`Adding ${pageResults.length} rows to results...`);
@@ -137,22 +158,33 @@ const gatherUserData = async (page, startDate, endDate) => {
 
         shouldContinue = pageResults.length === numRows;
         if (shouldContinue) {
-            pageNumber++;
-            await gotoNextUserDataPage(page);
+            await gotoDashboard(page, ++pageNumber);
         }
     }
     // console.log('results after reading and filtering:', Object.entries(results));
     return {page, results};
 };
-
+const filterRows = async (tableRows, startDate, endDate) => {
+    let rowsInRange = [];
+    for (const row of tableRows) {
+        let colElems = await row.$$("td");
+        let donationDateCol = await colElems[FIELD_COLUMN['donationDate']];
+        let dateDonated = await donationDate(donationDateCol);
+        if (isDateBetween(dateDonated, startDate, endDate, true)) {
+            rowsInRange.push(row);
+        }
+    }
+    return rowsInRange;
+};
 const processResults = async (page, results) => {
     let processedResults = [];
+    let counter = 0;
     for (const result of results) {
         let processedResult = {};
         for (const [field, processor] of Object.entries(PROCESSORS)) {
-            let processedValue = await processor(page, result);
+            await timeout(300);
             // console.log(`Processed value ${processedValue} for ${field}`);
-            processedResult[field] = processedValue;
+            processedResult[field] = await processor(page, result);
         }
         // console.log("result:", Object.entries(result));
         // console.log("processedResult:", Object.entries(processedResult));
@@ -161,17 +193,34 @@ const processResults = async (page, results) => {
         }
         // console.log("merged result:", Object.entries(result));
         processedResults.push(result);
+        process.stdout.write(`\rProcessed ${++counter} / ${results.length} rows`);
     }
+    console.log('\r');
     return processedResults;
 };
 
-const gotoNextUserDataPage = async page => {
-    elementForQuery(page, NEXT_BUTTON_CLASS) &&
-    await Promise.all([
-        page.waitForNavigation(),
-        page.click(NEXT_BUTTON_CLASS, {delay: 100, button: "left", clickCount: 1})
-    ]);
+const gotoDashboard = async (page, pageNumber = 1) => {
+    await gotoUrl(page, DONATIONS_URL(pageNumber));
+    return page;
 };
 
+export const getResultsFilename = date =>
+    `donations_ending_${date.toFormat(Y_M_D)}_${DateTime.now().toFormat(Y_M_D_TIME)}_${Math.floor(Math.random() * 9999)}.csv`;
 
+const areDatesEqual = (d1, d2) => d1.toMillis() === d2.toMillis();
 
+export const isDateBetween = (date, startDate, endDate, includeStart = false, includeEnd = false) => {
+    let isAtOrAfterStart = date > startDate || (includeStart && areDatesEqual(date, startDate));
+    let isAtOrBeforeEnd = date < endDate || (includeEnd && areDatesEqual(date, endDate));
+    return isAtOrAfterStart && isAtOrBeforeEnd;
+};
+
+/*const gotoNextUserDataPage = async page => {
+    if (elementForQuery(page, NEXT_BUTTON_CLASS)) {
+        let a = await page.$(NEXT_BUTTON_CLASS);
+        await Promise.all([
+            page.waitForNavigation(),
+            a.click({delay: 100, button: "left", clickCount: 1})
+        ]);
+    }
+};*/
