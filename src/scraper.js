@@ -40,7 +40,7 @@ export const testRedirects = async () => {
     console.log(`Project title: ${projectTitleText}`);
     !!browser && await browser.close();
 };
-export const runScraper = async () => {
+export const runScraper = async (startDate, endDate) => {
     puppeteer.use(
         RecaptchaPlugin({
             provider: {
@@ -52,8 +52,6 @@ export const runScraper = async () => {
     );
     puppeteer.use(StealthPlugin());
 
-    let endDate = END_DATE;
-    let startDate = START_DATE;
     // testRedirects().then(result => console.log("Result:", result)).catch(e => console.log("Error:", e));
     try {
         let data = await scrapeUserData(startDate, endDate);
