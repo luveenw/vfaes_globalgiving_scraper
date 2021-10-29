@@ -28,8 +28,8 @@ export const Y_M_D_TIME = `${Y_M_D}_HH.mm.ss.SSS`;
 // scraping variables
 export const END_DATE = DateTime.now();
 export const START_DATE = END_DATE.minus({months: 1});
-export const CONTINUE_SCRAPE = 'in range of scraping; looking for more data on next page';
-export const STOP_SCRAPE = 'earlier than start date; stopping scraping on this page';
+export const CONTINUE_SCRAPE = 'Looking for more data on next page';
+export const STOP_SCRAPE = 'Stopping scraping on this page';
 
 // 2captcha
 export const TWO_CAPTCHA_TOKEN = process.env.TWO_CAPTCHA_TOKEN;

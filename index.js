@@ -2,7 +2,7 @@
 import process from 'process';
 import express from 'express';
 import luxon from 'luxon';
-import {isDateBetween, runScraper} from './src/scraper.js';
+import {isDateAfter, isDateBetween, runScraper} from './src/scraper.js';
 import {Y_M_D} from './src/constants.js';
 
 const {DateTime} = luxon;
@@ -35,6 +35,11 @@ app.get('/scrape', (req, res) => {
     let endDateParam = req.query.end;
     let startDate = !!startDateParam && DateTime.fromFormat(startDateParam, Y_M_D) || DateTime.now().minus({months: 1});
     let endDate = !!endDateParam && DateTime.fromFormat(endDateParam, Y_M_D) || DateTime.now();
+    if (startDate > endDate) {
+        let temp = startDate;
+        startDate = endDate;
+        endDate = temp;
+    }
     console.log(`Scraping donor data from ${startDate.toFormat(Y_M_D)} to ${endDate.toFormat(Y_M_D)}`);
     runScraper(startDate, endDate).then(r => {
         if (!!r.error) {
@@ -51,10 +56,12 @@ app.get('/scrape', (req, res) => {
 });
 
 app.get('/test', (req, res) => {
-    let date = DateTime.fromFormat('2020-09-29', Y_M_D);
-    let startDate = DateTime.fromFormat('2020-09-28', Y_M_D);
-    let endDate = DateTime.fromFormat('2021-10-29', Y_M_D);
+    let date = DateTime.fromFormat('2020-12-01', Y_M_D);
+    let startDate = DateTime.fromFormat('2020-09-14', Y_M_D);
+    let endDate = DateTime.fromFormat('2021-12-01', Y_M_D);
     console.log('is date in range?', isDateBetween(date, startDate, endDate));
+    console.log('is date after?', isDateAfter(date, endDate));
+    res.end();
 });
 
 // listen for requests :)
