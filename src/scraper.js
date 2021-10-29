@@ -146,9 +146,8 @@ const gatherUserData = async (page, startDate, endDate) => {
                 }
             }
             pageResults.push(scrapeResult(scrapeObject));
-            process.stdout.write(`Scraped ${++counter} rows\r`);
+            console.log(`Scraped ${++counter} rows`);
         }
-        console.log('\r');
         // console.log(`${pageResults.length} rows remain after reading and filtering.`);
         // console.log(`Results from scraping page ${pageNumber}:\n${scrapeResultsString(pageResults)}`);
         // console.log(`Adding ${pageResults.length} rows to results...`);
@@ -213,9 +212,8 @@ const processResults = async (page, results) => {
         }
         // console.log("merged result:", Object.entries(result));
         processedResults.push(result);
-        process.stdout.write(`Processed ${++counter} / ${results.length} rows\r`);
+        console.log(`Processed ${++counter} / ${results.length} rows`);
     }
-    console.log('\r');
     return processedResults;
 };
 
