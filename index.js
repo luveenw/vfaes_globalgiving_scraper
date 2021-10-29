@@ -74,7 +74,7 @@ app.get('/scrape', (req, res) => {
             // res.header('Content-Type', 'text/csv');
             // res.attachment(r.resultsFilename);
             // res.send(r.results);
-            console.log('Processing failures:\n', failuresString(r.failures));
+            console.log(`${r.failures.length} processing failures:\n`, failuresString(r.failures));
             console.log(`Emailing results file to ${process.env.RECIPIENT_EMAILS}...`);
             emailResults(r, startDate, endDate);
         }
@@ -104,7 +104,7 @@ const emailResults = (r, startDate, endDate) => {
         replyTo: process.env.REPLY_TO_EMAIL,
         to: process.env.RECIPIENT_EMAILS,
         subject: `VFAES GlobalGiving Donor Data (${dateRangeStr})`,
-        text: `${mainEmailText}\n\nFailures:\n${failuresString(r.failures)}`,
+        text: `${mainEmailText}\n\n${r.failures.length} Processing Failures:\n${failuresString(r.failures)}`,
         attachments: [{
             filename: r.resultsFilename,
             content: r.results,
