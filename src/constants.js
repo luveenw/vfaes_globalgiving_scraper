@@ -26,8 +26,8 @@ export const Y_M_D = 'yyyy-MM-dd';
 export const Y_M_D_TIME = `${Y_M_D}_HH.mm.ss.SSS`;
 
 // scraping variables
-export const END_DATE = !!process.env.END_DATE ? DateTime.fromFormat(process.env.END_DATE, Y_M_D) : DateTime.now();
-export const START_DATE = !!process.env.START_DATE ? DateTime.fromFormat(process.env.START_DATE, Y_M_D) : END_DATE.minus({months: 1});
+export const END_DATE = DateTime.now();
+export const START_DATE = END_DATE.minus({months: 1});
 export const CONTINUE_SCRAPE = 'in range of scraping; looking for more data on next page';
 export const STOP_SCRAPE = 'earlier than start date; stopping scraping on this page';
 

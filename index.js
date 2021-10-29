@@ -31,12 +31,17 @@ app.get('/', (req, res) => {
 });
 
 app.get('/scrape', (req, res) => {
-    runScraper().then(r => {
+    let startDateParam = req.query.start;
+    let endDateParam = req.query.end;
+    let startDate = !!startDateParam && DateTime.fromFormat(startDateParam, Y_M_D) || DateTime.now().minus({months: 1});
+    let endDate = !!endDateParam && DateTime.fromFormat(endDateParam, Y_M_D) || DateTime.now();
+    console.log(`Scraping donor data from ${startDate.toFormat(Y_M_D)} to ${endDate.toFormat(Y_M_D)}`);
+    runScraper(startDate, endDate).then(r => {
         if (!!r.error) {
             console.log('Error:', r.error);
             res.send(ERROR_HTML(r.error));
         } else {
-            console.log("Sending results file to browser for download...");
+            console.log('Sending results file to browser for download...');
             res.header('Content-Type', 'text/csv');
             res.attachment(r.resultsFilename);
             res.send(r.results);

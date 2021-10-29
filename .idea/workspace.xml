@@ -5,7 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c299b688-86fb-4681-a688-c65e4b54dbb6" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/pageHelpers.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/pageHelpers.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/constants.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/constants.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/scraper.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/scraper.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -22,8 +25,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/package.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="506">
-              <caret line="24" column="9" selection-start-line="24" selection-start-column="9" selection-end-line="24" selection-end-column="9" />
+            <state relative-caret-position="572">
+              <caret line="26" column="54" selection-start-line="26" selection-start-column="54" selection-end-line="26" selection-end-column="54" />
             </state>
           </provider>
         </entry>
@@ -31,8 +34,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/scraper.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="454">
-              <caret line="75" column="49" selection-start-line="75" selection-start-column="49" selection-end-line="75" selection-end-column="49" />
+            <state relative-caret-position="262">
+              <caret line="42" column="42" selection-start-line="42" selection-start-column="42" selection-end-line="42" selection-end-column="42" />
               <folding>
                 <element signature="e#0#26#0" expanded="true" />
                 <element signature="e#85#138#0" expanded="true" />
@@ -59,11 +62,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="593">
-              <caret line="54" column="3" selection-start-line="54" selection-start-column="3" selection-end-line="54" selection-end-column="3" />
+            <state relative-caret-position="330">
+              <caret line="36" column="57" lean-forward="true" selection-start-line="36" selection-start-column="57" selection-end-line="36" selection-end-column="57" />
               <folding>
                 <element signature="e#20#33#0" expanded="true" />
               </folding>
@@ -83,7 +86,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/pageHelpers.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="278">
@@ -98,8 +101,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/constants.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="577">
-              <caret line="33" selection-start-line="33" selection-end-line="33" />
+            <state relative-caret-position="616">
+              <caret line="28" column="38" lean-forward="true" selection-start-line="28" selection-start-column="24" selection-end-line="28" selection-end-column="38" />
               <folding>
                 <element signature="e#0#30#0" expanded="true" />
               </folding>
@@ -111,7 +114,7 @@
         <entry file="file://$PROJECT_DIR$/.env">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="88">
-              <caret line="4" column="21" selection-start-line="4" selection-start-column="21" selection-end-line="4" selection-end-column="21" />
+              <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
             </state>
           </provider>
         </entry>
@@ -137,7 +140,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>timeout</find>
       <find>donorEmail</find>
       <find>PROCESSORS</find>
       <find>process</find>
@@ -167,6 +169,7 @@
       <find>loggingin</find>
       <find>logging</find>
       <find>env</find>
+      <find>\r</find>
     </findStrings>
     <replaceStrings>
       <replace>'</replace>
@@ -198,12 +201,12 @@
         <option value="$PROJECT_DIR$/src/index.js" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/src/scrapeFunctions.js" />
+        <option value="$PROJECT_DIR$/src/pageHelpers.js" />
+        <option value="$PROJECT_DIR$/package.json" />
         <option value="$PROJECT_DIR$/src/constants.js" />
+        <option value="$PROJECT_DIR$/.env" />
         <option value="$PROJECT_DIR$/src/scraper.js" />
         <option value="$PROJECT_DIR$/index.js" />
-        <option value="$PROJECT_DIR$/.env" />
-        <option value="$PROJECT_DIR$/package.json" />
-        <option value="$PROJECT_DIR$/src/pageHelpers.js" />
       </list>
     </option>
   </component>
@@ -321,7 +324,7 @@
       <workItem from="1631298286243" duration="13304000" />
       <workItem from="1635255243079" duration="100782000" />
       <workItem from="1635448799526" duration="25615000" />
-      <workItem from="1635480061172" duration="11621000" />
+      <workItem from="1635480061172" duration="13363000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit - local test data being scraped">
       <created>1635323936934</created>
@@ -414,17 +417,38 @@
       <option name="project" value="LOCAL" />
       <updated>1635525105495</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Start puppeteer without sandbox">
+      <created>1635525547899</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1635525547899</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Add puppeteer-extra-plugin-user-preferences dep for Glitch">
+      <created>1635525735049</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1635525735049</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Put carriage returns at end of line for platform independent logging">
+      <created>1635526304210</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1635526304210</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="188478000" />
+    <option name="totallyTimeSpent" value="190220000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="2576" height="1416" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.499388" visible="true" weight="0.15302067" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.499388" visible="true" weight="0.15302067" />
       <window_info id="Structure" order="1" sideWeight="0.500612" side_tool="true" weight="0.15302067" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="aws.explorer" order="3" side_tool="true" />
@@ -432,8 +456,8 @@
       <window_info id="Favorites" order="5" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32936507" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49920508" weight="0.33650795" />
-      <window_info anchor="bottom" id="Debug" order="3" visible="true" weight="0.3515873" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49920508" visible="true" weight="0.33650795" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.3515873" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -512,7 +536,10 @@
     <MESSAGE value="* Fix &quot;continue scraping&quot; check&#10;* Remove unneeded puppeteer dep&#10;* Better log messages" />
     <MESSAGE value="Listen on port specified in .env" />
     <MESSAGE value="Add back puppeteer dep" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add back puppeteer dep" />
+    <MESSAGE value="Start puppeteer without sandbox" />
+    <MESSAGE value="Add puppeteer-extra-plugin-user-preferences dep for Glitch" />
+    <MESSAGE value="Put carriage returns at end of line for platform independent logging" />
+    <option name="LAST_COMMIT_MESSAGE" value="Put carriage returns at end of line for platform independent logging" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -803,55 +830,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/constants.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="577">
-          <caret line="33" selection-start-line="33" selection-end-line="33" />
-          <folding>
-            <element signature="e#0#30#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="276">
           <caret line="74" column="4" selection-start-line="74" selection-start-column="4" selection-end-line="74" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.env">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="88">
-          <caret line="4" column="21" selection-start-line="4" selection-start-column="21" selection-end-line="4" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="593">
-          <caret line="54" column="3" selection-start-line="54" selection-start-column="3" selection-end-line="54" selection-end-column="3" />
-          <folding>
-            <element signature="e#20#33#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/package.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="506">
-          <caret line="24" column="9" selection-start-line="24" selection-start-column="9" selection-end-line="24" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/scraper.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="454">
-          <caret line="75" column="49" selection-start-line="75" selection-start-column="49" selection-end-line="75" selection-end-column="49" />
-          <folding>
-            <element signature="e#0#26#0" expanded="true" />
-            <element signature="e#85#138#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -861,6 +843,51 @@
           <caret line="59" column="33" selection-start-line="59" selection-start-column="33" selection-end-line="59" selection-end-column="33" />
           <folding>
             <element signature="e#0#25#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="572">
+          <caret line="26" column="54" selection-start-line="26" selection-start-column="54" selection-end-line="26" selection-end-column="54" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/constants.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="616">
+          <caret line="28" column="38" lean-forward="true" selection-start-line="28" selection-start-column="24" selection-end-line="28" selection-end-column="38" />
+          <folding>
+            <element signature="e#0#30#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.env">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="88">
+          <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/scraper.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="262">
+          <caret line="42" column="42" selection-start-line="42" selection-start-column="42" selection-end-line="42" selection-end-column="42" />
+          <folding>
+            <element signature="e#0#26#0" expanded="true" />
+            <element signature="e#85#138#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="36" column="57" lean-forward="true" selection-start-line="36" selection-start-column="57" selection-end-line="36" selection-end-column="57" />
+          <folding>
+            <element signature="e#20#33#0" expanded="true" />
           </folding>
         </state>
       </provider>
