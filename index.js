@@ -26,6 +26,24 @@ const app = express();
 app.use(logger); //Tells the app to send all requests through the 'logger' function
 // app.use(app.router); //Tells the app to use the router
 
+const serverTimeout = 15 * 60 * 1000; // 15 minutes
+
+app.use((req, res, next) => {
+    // Set the timeout for all HTTP requests
+    req.setTimeout(serverTimeout, () => {
+        let err = new Error('Request Timeout');
+        err.status = 408;
+        next(err);
+    });
+    // Set the server response timeout for all HTTP requests
+    res.setTimeout(serverTimeout, () => {
+        let err = new Error('Service Unavailable');
+        err.status = 503;
+        next(err);
+    });
+    next();
+});
+
 app.get('/', (req, res) => {
     console.log("Server up!");
 });
