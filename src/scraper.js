@@ -126,7 +126,7 @@ const gatherUserData = async (page, startDate, endDate) => {
         let tableRows = await page.$$(TABLE_ROW_SELECTOR);
         let pageResults = [];
         numRows = tableRows.length;
-        process.stdout.write(`\rPage ${pageNumber}: ${numRows} rows found.`);
+        process.stdout.write(`Page ${pageNumber}: ${numRows} rows found.\r`);
         if (numRows === 0) {
             break;
         }
@@ -148,7 +148,7 @@ const gatherUserData = async (page, startDate, endDate) => {
                 }
             }
             pageResults.push(scrapeResult(scrapeObject));
-            process.stdout.write(`\rScraped ${++counter} rows`);
+            process.stdout.write(`Scraped ${++counter} rows\r`);
         }
         console.log('\r');
         // console.log(`${pageResults.length} rows remain after reading and filtering.`);
@@ -215,7 +215,7 @@ const processResults = async (page, results) => {
         }
         // console.log("merged result:", Object.entries(result));
         processedResults.push(result);
-        process.stdout.write(`\rProcessed ${++counter} / ${results.length} rows`);
+        process.stdout.write(`Processed ${++counter} / ${results.length} rows\r`);
     }
     console.log('\r');
     return processedResults;
