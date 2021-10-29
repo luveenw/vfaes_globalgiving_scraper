@@ -2,7 +2,7 @@ import luxon from 'luxon';
 import process from 'process';
 import fspkg from 'fs';
 import {sep} from 'path';
-import puppeteer from 'puppeteer-extra';
+import {default as puppeteer} from 'puppeteer-extra';
 
 import {elementForQuery, gotoUrl, performLogin} from './pageHelpers.js';
 import {
@@ -38,15 +38,7 @@ export const testRedirects = async () => {
     console.log(`Project title: ${projectTitleText}`);
     !!browser && await browser.close();
 };
-const defaultSetMessage = (message, sameLine = false) => {
-    if (sameLine) {
-        process.stdout.write(message);
-    } else {
-        console.log(message);
-    }
-};
-export const runScraper = async (setMessage = defaultSetMessage) => {
-
+export const runScraper = async () => {
     puppeteer.use(
         RecaptchaPlugin({
             provider: {
@@ -62,17 +54,17 @@ export const runScraper = async (setMessage = defaultSetMessage) => {
     let startDate = endDate.minus({months: 1});
     let resultsFilename = '';
     // testRedirects().then(result => console.log("Result:", result)).catch(e => console.log("Error:", e));
-    await scrapeUserData(startDate, endDate, setMessage)
+    await scrapeUserData(startDate, endDate)
         .then(async (result) => {
             resultsFilename = getResultsFilename(endDate);
-            await writeResultsToFile(result, resultsFilename, setMessage);
+            await writeResultsToFile(result, resultsFilename);
         })
         .catch(e => console.log("Error:", e));
     // while (true) {console.log(getResultsFilename(LocalDate.now()));}
     return resultsFilename;
 };
 
-const scrapeUserData = async (startDate, endDate, setMessage) => {
+const scrapeUserData = async (startDate, endDate) => {
     // console.log(`promisePoller [type ${typeof promisePoller}]:`, promisePoller);
     let browser;
     let page;
@@ -81,30 +73,30 @@ const scrapeUserData = async (startDate, endDate, setMessage) => {
     try {
         // console.log(`Loading url ${LOCAL_FILE_URL}...`);
         // ({browser, page} = await loadFile(LOCAL_FILE_URL));
-        setMessage('Logging in...');
-        ({browser, page, loginResult} = await performLogin(setMessage));
+        console.log('Logging in...');
+        ({browser, page, loginResult} = await performLogin());
         if (!loginResult) {
             !!browser && await browser.close();
         } else {
-            setMessage('Logged in.');
+            console.log('Logged in.');
             page = await gotoDashboard(page);
-            setMessage('Gathering user data...');
-            ({page, results} = await gatherUserData(page, startDate, endDate, setMessage));
-            let processedResults = await processResults(page, results, setMessage);
+            console.log('Gathering user data...');
+            ({page, results} = await gatherUserData(page, startDate, endDate));
+            let processedResults = await processResults(page, results);
             !!browser && await browser.close();
-            setMessage(`Gathered ${processedResults.length} rows.`);
+            console.log(`Gathered ${processedResults.length} rows.`);
             return processedResults;
             // mailFile(resultsFilename);
         }
     } catch (e) {
-        setMessage("Error:", e);
+        console.log("Error:", e);
         !!browser && await browser.close();
     }
 };
 
-const writeResultsToFile = async (results, path, setMessage) => {
+const writeResultsToFile = async (results, path) => {
     let filePath = `result${sep}${path}`;
-    setMessage(`Writing ${results.length} results to file ${filePath}`);
+    console.log(`Writing ${results.length} results to file ${filePath}`);
     let writeLines = [
         () => fs.writeFile(`${filePath}`, Object.values(RESULT_COLUMN_HEADERS).join(',')),
         () => fs.appendFile(`${filePath}`, '\n'),
@@ -116,7 +108,7 @@ const writeResultsToFile = async (results, path, setMessage) => {
     }
 };
 
-const gatherUserData = async (page, startDate, endDate, setMessage) => {
+const gatherUserData = async (page, startDate, endDate) => {
     // for each page,
     // 0. rows = find #donation tbody tr. Filter these as in 1.
     // 1. donation date = find 6th td. If donation date is before beginning of last month, stop collecting
@@ -132,13 +124,13 @@ const gatherUserData = async (page, startDate, endDate, setMessage) => {
         let tableRows = await page.$$(TABLE_ROW_SELECTOR);
         let pageResults = [];
         numRows = tableRows.length;
-        setMessage(`\rPage ${pageNumber}: ${numRows} rows found.`, true);
+        process.stdout.write(`\rPage ${pageNumber}: ${numRows} rows found.`);
         if (numRows === 0) {
             break;
         }
         let filteredRows = await filterRows(tableRows, startDate, endDate);
-        setMessage(` ${filteredRows.length} are in range ${startDate.toFormat(Y_M_D)} - ${endDate.toFormat(Y_M_D)} \r`, true);
-        setMessage('\r');
+        process.stdout.write(` ${filteredRows.length} are in range ${startDate.toFormat(Y_M_D)} - ${endDate.toFormat(Y_M_D)} \r`);
+        console.log('\r');
         for (const row of filteredRows) {
             let scrapeObject = {};
             let colElems = await row.$$("td");
@@ -147,16 +139,15 @@ const gatherUserData = async (page, startDate, endDate, setMessage) => {
                 if (!!fields) {
                     for (const field of fields) {
                         // console.log(`Running scraper for ${field} column...`);
-                        let scrapedValue = await FIELD_SCRAPERS[field](colElems[FIELD_COLUMN[field]]);
                         // console.log(`Scraped value ${scrapedValue} for ${field}`);
-                        scrapeObject[field] = scrapedValue;
+                        scrapeObject[field] = await FIELD_SCRAPERS[field](colElems[FIELD_COLUMN[field]]);
                     }
                 }
             }
             pageResults.push(scrapeResult(scrapeObject));
-            setMessage(`\rScraped ${++counter} / ${filteredRows.length} rows`, true);
+            process.stdout.write(`\rScraped ${++counter} / ${filteredRows.length} rows`);
         }
-        setMessage('\r');
+        console.log('\r');
         // console.log(`${pageResults.length} rows remain after reading and filtering.`);
         // console.log(`Results from scraping page ${pageNumber}:\n${scrapeResultsString(pageResults)}`);
         // console.log(`Adding ${pageResults.length} rows to results...`);
@@ -183,7 +174,7 @@ const filterRows = async (tableRows, startDate, endDate) => {
     }
     return rowsInRange;
 };
-const processResults = async (page, results, setMessage) => {
+const processResults = async (page, results) => {
     let processedResults = [];
     let counter = 0;
     for (const result of results) {
@@ -199,9 +190,9 @@ const processResults = async (page, results, setMessage) => {
         }
         // console.log("merged result:", Object.entries(result));
         processedResults.push(result);
-        setMessage(`\rProcessed ${++counter} / ${results.length} rows`, true);
+        process.stdout.write(`\rProcessed ${++counter} / ${results.length} rows`);
     }
-    setMessage('\r');
+    console.log('\r');
     return processedResults;
 };
 

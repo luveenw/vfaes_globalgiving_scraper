@@ -1,8 +1,13 @@
+import process from 'process';
+import {default as dotenv} from 'dotenv';
+
+dotenv.config();
+
 // GlobalGiving
 export const GLOBALGIVING_URL = 'https://www.globalgiving.org';
 export const LOGIN_URL = `${GLOBALGIVING_URL}/dy/v2/login/form.html`;
-export const LOGIN_USERNAME = 'sangita@vfaes.org';
-export const LOGIN_PASSWORD = 'love4Arjun*';
+export const LOGIN_USERNAME = process.env.LOGIN_USERNAME;
+export const LOGIN_PASSWORD = process.env.LOGIN_PASSWORD;
 export const LOGIN_USERNAME_ID = '#login_email';
 export const LOGIN_PASSWORD_ID = '#passwd';
 export const LOGIN_BUTTON_ID = '#login_button';
@@ -19,7 +24,7 @@ export const Y_M_D_TIME = `${Y_M_D}_HH.mm.ss.SSS`;
 
 
 // 2captcha
-export const TWO_CAPTCHA_TOKEN = '616b879642c7d3c4be73891d5c753420';
+export const TWO_CAPTCHA_TOKEN = process.env.TWO_CAPTCHA_TOKEN;
 export const TWO_CAPTCHA_UNSOLVABLE_ERROR = 'ERROR_CAPTCHA_UNSOLVABLE';
 
 // testing with local files
