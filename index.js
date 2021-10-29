@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import process from 'process';
 import express from 'express';
 import luxon from 'luxon';
 import {isDateBetween, runScraper} from './src/scraper.js';
@@ -51,6 +52,7 @@ app.get('/test', (req, res) => {
     console.log('is date in range?', isDateBetween(date, startDate, endDate));
 });
 
-app.listen(3001, () =>
-    console.log('Example app listening on port 3001!'),
-);
+// listen for requests :)
+const listener = app.listen(process.env.PORT, () => {
+    console.log("Your app is listening on port " + listener.address().port);
+});
