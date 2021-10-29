@@ -57,7 +57,9 @@ let solveCaptchaTask = (page) => {
 };
 
 export const performLogin = async () => {
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    });
     const page = await browser.newPage();
 
     console.log(`Going to login page (${consts.LOGIN_URL})...`);
