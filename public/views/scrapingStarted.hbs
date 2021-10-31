@@ -1,4 +1,35 @@
-<h2>🚀 Processing donor data from {{startDate}} to before {{endDate}}</h2>
-<div style="padding-top:14px;">Results will be emailed to 📪 <strong>{{recipientEmails}}.</strong></div>
-<div style="padding-top:14px;">🕗 Depending on the specified date range, this could take a while.</div>
-<div>If the email hasn't arrived in an hour, please try again! 😊</div>
+<div class="container">
+    {{> scraperHero}}
+    <div class="card" style="margin-top: 2em;">
+        <div class="card-content">
+            <div class="content">
+                <article class="message is-success">
+                    <div class="message-header">
+                        <p>Scraping Started</p>
+                    </div>
+                    <div class="message-body">
+                        Now scraping donor data from <strong>{{startDate}}</strong> to before
+                        <strong>{{endDate}}</strong>.
+                    </div>
+                </article>
+                <article class="message is-info">
+                    <div class="message-header">
+                        <p>Who can see the scraped data?</p>
+                    </div>
+                    <div class="message-body">
+                        Results will be emailed to 📪 <strong>{{recipientEmails}}.</strong>
+                    </div>
+                </article>
+                <article class="message is-info">
+                    <div class="message-header">
+                        <p>If I'm a recipient, when will I receive the email?</p>
+                    </div>
+                    <div class="message-body">
+                        Depending on the specified date range, this could take a while. If the email hasn't arrived in
+                        an hour, please try again!
+                    </div>
+                </article>
+            </div>
+        </div>
+    </div>
+</div>

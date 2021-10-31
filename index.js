@@ -39,13 +39,17 @@ app.use(express.static('public'));
 app.use(logger); //Tells the app to send all requests through the 'logger' function
 // app.use(app.router); //Tells the app to use the router
 
-const PAGE_TITLE = prefix => `${prefix} - VFAES GG Scraper`;
+const PAGE_TITLE = prefix => `${prefix} | VFAES GG Scraper`;
 
 app.get('/', (req, res) => {
+    let endDate = DateTime.now();
+    let startDate = endDate.minus({months: 1});
     res.render('main',
         {
             layout: 'index',
-            pageTitle: PAGE_TITLE('Welcome')
+            pageTitle: PAGE_TITLE('Welcome'),
+            startDate: startDate.toFormat(Y_M_D),
+            endDate: endDate.toFormat(Y_M_D)
         });
 });
 
@@ -71,7 +75,7 @@ app.get('/scrape', (req, res) => {
             endDate: endDateStr,
             recipientEmails: process.env.RECIPIENT_EMAILS
         });
-    /*runScraper(startDate, endDate).then(r => {
+    runScraper(startDate, endDate).then(r => {
         if (!!r.error) {
             console.log('Error during scraping:', r.error);
             console.log('Error stacktrace:', r.error.stack);
@@ -90,7 +94,7 @@ app.get('/scrape', (req, res) => {
         console.log('Unknown error encountered:', e);
         console.log('Error stacktrace:', e.stack);
         emailAppError(e, startDate, endDate);
-    });*/
+    });
 });
 
 app.get('/test', (req, res) => {
