@@ -73,9 +73,10 @@ app.get('/scrape', (req, res) => {
             pageTitle: PAGE_TITLE(scrapingMsg),
             startDate: startDateStr,
             endDate: endDateStr,
-            recipientEmails: process.env.RECIPIENT_EMAILS
+            recipientEmails: process.env.RECIPIENT_EMAILS,
+            requestEmail: `${process.env.REPLY_TO_EMAIL}?subject=Request to Add VFAES GG Scraper Recipient&body=Hello - please add me to the mailing list for VFAES GlobalGiving data. Thank you!`
         });
-    runScraper(startDate, endDate).then(r => {
+    /*runScraper(startDate, endDate).then(r => {
         if (!!r.error) {
             console.log('Error during scraping:', r.error);
             console.log('Error stacktrace:', r.error.stack);
@@ -94,7 +95,7 @@ app.get('/scrape', (req, res) => {
         console.log('Unknown error encountered:', e);
         console.log('Error stacktrace:', e.stack);
         emailAppError(e, startDate, endDate);
-    });
+    });*/
 });
 
 app.get('/test', (req, res) => {

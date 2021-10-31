@@ -13,7 +13,7 @@
     "js": "node index.js",
     "deploy": "npm run css-deploy",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npm-run-all --parallel css-watch js",
+    "start": "npm run deploy && npm-run-all --parallel css-watch js",
     "debug": "set DEBUG=puppeteer-extra,puppeteer-extra-plugin:* && node index.js"
   },
   "engines": {
