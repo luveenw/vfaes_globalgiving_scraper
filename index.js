@@ -1,34 +1,15 @@
-#!/usr/bin/env node
 import process from 'process';
+import path from 'path';
+import {fileURLToPath} from 'url';
 import express from 'express';
+import handlebars from 'express-handlebars';
 import luxon from 'luxon';
 import {isDateAfter, isDateBetween, runScraper} from './src/scraper.js';
 import {emailAppError, emailResults, failuresString} from './src/mailer.js';
 import {Y_M_D} from './src/constants.js';
 
 const {DateTime} = luxon;
-const SCRAPING_IN_PROGRESS_HTML = (startDate, endDate) => `<!DOCTYPE html>
-<html lang="en-us">
-    <head><title>Processing donor data from ${startDate.toFormat(Y_M_D)} to before ${endDate.toFormat(Y_M_D)}</title></head>
-    <body>
-        <ol>
-            <h2>🚀 Processing donor data from ${startDate.toFormat(Y_M_D)} to before ${endDate.toFormat(Y_M_D)}</h2>
-            <div style="padding-top:14px;">Results will be emailed to 📪 <strong>${process.env.RECIPIENT_EMAILS}.</strong></div>
-            <div style="padding-top:14px;">🕗 Depending on the specified date range, this could take a while.</div>
-            <div>If the email hasn't arrived in an hour, please try again! 😊</div>
-            <h2 style="padding-top: 14px;">⚠ Please set up your captcha app so you can solve the GlobalGiving login captcha.</h2>
-            <div>ℹ The login key for the captcha app is called TWO_CAPTCHA_TOKEN, and it can be found <a target="_blank" href="https://glitch.com/edit/#!/fortunate-likeable-confidence?path=.env">here</a>.</div>
-            <h3>🔨 Desktop Captcha App Setup</h3>
-            <ol>
-                <li>Download the desktop captcha app <a target="_blank" href="https://github.com/rucaptcha/bot-x/releases/download/v0.52/x-bot-en-v0.52.zip">here (Windows only)</a></li>
-                <li>Extract the zip contents to your computer.</li>
-                <li>Double click RuCaptchaBot.exe to start the app.</li>
-                <li>On the screen titled <strong>Authorization</strong>, enter the key from <a target="_blank" href="https://glitch.com/edit/#!/fortunate-likeable-confidence?path=.env%3A6%3A52">TWO_CAPTCHA_TOKEN</a>.</li>
-                <li>Click <strong>Start</strong> to start receiving GlobalGiving login captchas.</li>
-            </ol>
-        </div>
-    </body>
-</html>`;
+
 // runScraper().then(result => console.log(`Wrote results to file ${result}`));
 
 //Runs every time a request is recieved
@@ -38,11 +19,38 @@ const logger = (req, res, next) => {
 };
 const app = express();
 
+//we need to change up how __dirname is used for ES6 purposes
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+//now please load my static html and css files for my express app, from my /public directory
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.set('view engine', 'hbs');
+app.set('views', path.join(__dirname, '/public/views'));
+
+//Sets handlebars configurations (we will go through them later on)
+app.engine('hbs', handlebars({
+    layoutsDir: path.join(__dirname, '/public/views/layouts'),
+    partialsDir: path.join(__dirname, '/public/views/partials'),
+    extname: 'hbs'
+}));
+
+app.use(express.static('public'));
+
 app.use(logger); //Tells the app to send all requests through the 'logger' function
 // app.use(app.router); //Tells the app to use the router
 
+const PAGE_TITLE = prefix => `${prefix} | VFAES GG Scraper`;
+
 app.get('/', (req, res) => {
-    console.log("Server up!");
+    let endDate = DateTime.now();
+    let startDate = endDate.minus({months: 1});
+    res.render('main',
+        {
+            layout: 'index',
+            pageTitle: PAGE_TITLE('Welcome'),
+            startDate: startDate.toFormat(Y_M_D),
+            endDate: endDate.toFormat(Y_M_D)
+        });
 });
 
 app.get('/scrape', (req, res) => {
@@ -55,8 +63,18 @@ app.get('/scrape', (req, res) => {
         startDate = endDate;
         endDate = temp;
     }
-    console.log(`Scraping donor data from ${startDate.toFormat(Y_M_D)} to ${endDate.toFormat(Y_M_D)}`);
-    res.send(SCRAPING_IN_PROGRESS_HTML(startDate, endDate));
+    const startDateStr = startDate.toFormat(Y_M_D);
+    const endDateStr = endDate.toFormat(Y_M_D);
+    const scrapingMsg = `Scraping donor data from ${startDateStr} to ${endDateStr}`;
+    console.log(scrapingMsg);
+    res.render('scrapingStarted',
+        {
+            layout: 'index',
+            pageTitle: PAGE_TITLE(scrapingMsg),
+            startDate: startDateStr,
+            endDate: endDateStr,
+            recipientEmails: process.env.RECIPIENT_EMAILS
+        });
     runScraper(startDate, endDate).then(r => {
         if (!!r.error) {
             console.log('Error during scraping:', r.error);

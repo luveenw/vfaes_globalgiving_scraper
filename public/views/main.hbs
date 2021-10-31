@@ -1,0 +1,83 @@
+<script>
+    const handleScrape = () => {
+        let startDate = document.querySelector("#startDate").value;
+        let endDate = document.querySelector("#endDate").value;
+        let link = '/scrape';
+        let queryParams = [];
+        if(!!startDate) {
+            queryParams.push(`start=${startDate}`);
+        }
+        if(!!endDate) {
+            queryParams.push(`end=${endDate}`);
+        }
+        if(!!queryParams.length) {
+            link =`${link}?${queryParams.join('&')}`
+        }
+        window.location = link;
+    }
+</script>
+<div class="container">
+    {{> scraperHero}}
+
+    <div class="card" style="margin-top: 2em;">
+        <header class="card-header"></header>
+        <div class="card-content">
+            <div class="content">
+                <article class="message is-info">
+                    <div class="message-header">
+                        <p>Initial Setup</p>
+                    </div>
+                    <div class="message-body">
+                        <p>Please set up a captcha app to solve the GlobalGiving login captcha.</p>
+                        <ol>
+                            <li>Download the desktop captcha app <a target="_blank"
+                                                                    href="https://github.com/rucaptcha/bot-x/releases/download/v0.52/x-bot-en-v0.52.zip">here
+                                (Windows only)</a>.
+                            </li>
+                            <li>Extract the contents of the downloaded zip file to your computer.</li>
+                            <li>Double click RuCaptchaBot.exe to start the app.</li>
+                            <li>On the screen titled <strong>Authorization</strong>, enter the key to receive the
+                                captcha.
+                                <ul style="margin-top: auto;">
+                                    <li>The key is only visible to users with whom it has been shared. Click <a
+                                            target="_blank"
+                                            href="https://glitch.com/edit/#!/fortunate-likeable-confidence?path=.env%3A6%3A52">here</a>
+                                        to view the key.
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>Click <strong>Start</strong> to start receiving GlobalGiving login captchas.</li>
+                        </ol>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="title is-3">Run Scraper</h2>
+
+    <div class="card">
+        <div class="card-content">
+            <div class="content">
+                <p class="subtitle">Specify the dates to be scraped below. Leave blank to scrape from <strong>{{startDate}}</strong> to
+                    before <strong>{{endDate}}</strong>.
+                </p>
+                <div class="field">
+                    <label class="label" for="startDate">Scrape from&nbsp;</label>
+                    <div class="control">
+                        <input id="startDate" class="input" type="text" placeholder="{{startDate}}">
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label" for="endDate">&nbsp;to before</label>
+                    <div class="control">
+                        <input id="endDate" class="input" type="text" placeholder="{{endDate}}">
+                    </div>
+                </div>
+                <div class="field is-grouped is-grouped-centered">
+                    <button class="button is-link" onclick="handleScrape()">Scrape</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
