@@ -4,14 +4,14 @@
         let endDate = document.querySelector("#endDate").value;
         let link = '/scrape';
         let queryParams = [];
-        if(!!startDate) {
+        if (!!startDate) {
             queryParams.push(`start=${startDate}`);
         }
-        if(!!endDate) {
+        if (!!endDate) {
             queryParams.push(`end=${endDate}`);
         }
-        if(!!queryParams.length) {
-            link =`${link}?${queryParams.join('&')}`
+        if (!!queryParams.length) {
+            link = `${link}?${queryParams.join('&')}`
         }
         window.location = link;
     }
@@ -59,8 +59,11 @@
     <div class="card">
         <div class="card-content">
             <div class="content">
-                <p class="subtitle">Specify the dates to be scraped below. Leave blank to scrape from <strong>{{startDate}}</strong> to
-                    before <strong>{{endDate}}</strong>.
+                <p class="subtitle">Specify the dates to be scraped below.
+                <ul>
+                    <li>Leave <strong>Scrape from</strong> blank to scrape from <strong>{{startDate}}</strong>.</li>
+                    <li>Leave <strong>to before</strong> blank to scrape to before <strong>{{endDate}}</strong>.</li>
+                </ul>
                 </p>
                 <div class="field">
                     <label class="label" for="startDate">Scrape from&nbsp;</label>
