@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <!--
+      This is the main Handlebars template for the site
+      - When the user visits the homepage or submits a color the app calls the endpoints in server.js
+      - The server script passes data in here and the Handlebars code builds it into the HTML page
+    -->
+
+    <meta charset="utf-8"/>
+    <link rel="icon"
+          href="https://static.wixstatic.com/media/091e3d_505a349a762f4b83b728dd0b922930a0~mv2.jpg/v1/fill/w_32%2Ch_32%2Clg_1%2Cusm_0.66_1.00_0.01/091e3d_505a349a762f4b83b728dd0b922930a0~mv2.jpg"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <title>{{pageTitle}}</title>
+
+    <!-- Import the webpage's stylesheet -->
+    <link rel="stylesheet" href="css/main.css"/>
+</head>
+<body>
+<div class="wrapper">
+    <div class="content" role="main">
+        {{{body}}}
+    </div>
+</div>
+</body>
+</html>

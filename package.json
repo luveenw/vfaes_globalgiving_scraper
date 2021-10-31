@@ -6,9 +6,16 @@
   "private": true,
   "main": "index.js",
   "scripts": {
+    "css-build": "node-sass public/sass/main.scss public/css/main.css",
+    "css-deploy": "npm run css-build && npm run css-postcss",
+    "css-postcss": "postcss --use autoprefixer --output public/css/main.css public/css/main.css",
+    "css-watch": "npm run css-build -- --watch",
+    "js": "node index.js",
+    "deploy": "npm run css-deploy",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js",
+    "start": "npm-run-all --parallel css-watch js",
     "debug": "set DEBUG=puppeteer-extra,puppeteer-extra-plugin:* && node index.js"
+
   },
   "engines": {
     "node": ">=14.12.0"
@@ -18,20 +25,30 @@
   "license": "ISC",
   "dependencies": {
     "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "express-handlebars": "^5.3.4",
     "luxon": "^2.0.2",
+    "nodemailer": "^6.7.0",
     "process": "latest",
     "promise-poller": "1.8.0",
-    "express": "^4.17.1",
     "puppeteer": "^10.4.0",
-    "nodemailer": "^6.7.0",
     "puppeteer-extra": "^3.1.18",
-    "puppeteer-extra-plugin-user-data-dir": "^2.3.1",
-    "puppeteer-extra-plugin-user-preferences": "^2.3.1",
     "puppeteer-extra-plugin-recaptcha": "^3.4.0",
-    "puppeteer-extra-plugin-stealth": "^2.7.8"
+    "puppeteer-extra-plugin-stealth": "^2.7.8",
+    "puppeteer-extra-plugin-user-data-dir": "^2.3.1",
+    "puppeteer-extra-plugin-user-preferences": "^2.3.1"
   },
   "devDependencies": {
-    "babel-preset-es2015": "^6.24.1",
-    "babel-cli": "^6.26.0"
+    "autoprefixer": "^9.7.6",
+    "webpack": "^5.61.0",
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-es2015-ie": "^6.7.0",
+    "node-sass": "^4.13.1",
+    "npm-run-all": "^4.1.5",
+    "css-loader": "^6.5.0",
+    "style-loader": "^3.3.1",
+    "postcss-loader": "^6.2.0",
+    "sass-loader": "^12.3.0"
   }
 }
