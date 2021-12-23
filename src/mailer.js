@@ -50,13 +50,14 @@ Generated at ${DateTime.now().toFormat(Y_M_D_TIME_EMAIL)}`;
 };
 
 export const emailAppError = (e, startDate, endDate) => {
-    let mainEmailText = `An error was encountered while generating donor data for ${dateRangeStr}. Please try again!
+    let dateRange = dateRangeStr(startDate, endDate);
+    let mainEmailText = `An error was encountered while generating donor data for ${dateRange}. Please try again!
 This email was generated at ${DateTime.now().toFormat(Y_M_D_TIME_EMAIL)}.`;
     sendMail({
         from: process.env.SCRAPER_EMAIL_FROM,
         replyTo: process.env.REPLY_TO_EMAIL,
         to: [process.env.RECIPIENT_EMAILS, process.env.REPLY_TO_EMAIL].join(','),
-        subject: `[ERROR] VFAES GlobalGiving Donor Data (${dateRangeStr(startDate, endDate)})`,
+        subject: `[ERROR] VFAES GlobalGiving Donor Data (${dateRange})`,
         text: `${mainEmailText}
         
         Error: ${e}
