@@ -1,95 +1,119 @@
 <script>
-    const handleScrape = () => {
-        let startDate = document.querySelector("#startDate").value;
-        let endDate = document.querySelector("#endDate").value;
-        let link = '/scrape';
-        let queryParams = [];
-        if (!!startDate) {
-            queryParams.push(`start=${startDate}`);
-        }
-        if (!!endDate) {
-            queryParams.push(`end=${endDate}`);
-        }
-        if (!!queryParams.length) {
-            link = `${link}?${queryParams.join('&')}`
-        }
-        window.location = link;
-    }
+  const handleScrape = () => { let startDate =
+  document.querySelector("#startDate").value; let endDate =
+  document.querySelector("#endDate").value; let link = '/scrape'; let
+  queryParams = []; if (!!startDate) { queryParams.push(`start=${startDate}`); }
+  if (!!endDate) { queryParams.push(`end=${endDate}`); } if
+  (!!queryParams.length) { link = `${link}?${queryParams.join('&')}` }
+  window.location = link; }
 </script>
 <div class="container">
-    <div class="card" style="margin-top: 2em;">
-        <header class="card-header"></header>
-        <div class="card-content">
-            <div class="content">
-                <article class="message is-info">
-                    <div class="message-header">
-                        <p>Initial Setup</p>
-                    </div>
-                    <div class="message-body">
-                        <p>Please set up a captcha app to solve the GlobalGiving login captcha.</p>
-                        <ol>
-                            <li>Download the desktop captcha app for <a target="_blank"
-                                                                    href="https://github.com/rucaptcha/bot-x/releases/download/v0.54/x-bot-en-v0.54.zip">Windows
-                                </a> or <a href="https://play.google.com/store/apps/details?id=com.rucaptcha.bot">Android</a>.
-                            </li>
-                            <li>Windows:
-                              <ul>
-                                <li>Extract the contents of the downloaded zip file to your computer.</li>
-                                <li>Double click RuCaptchaBot.exe to start the app.</li>
-                                <li>On the screen titled <strong>Authorization</strong>, enter the key and click "On..." to save the key.</li>
-                                <li>Click <strong>Start</strong> to start receiving GlobalGiving login captchas.</li>
-                              </ul>
-                            </li>
-                            <li>Android:
-                              <ul>
-                                <li>Open the app and enter the key to begin receiving GlobalGiving login captchas.</li>
-                              </ul>
-                            </li>
-                            
-                            <li>
-                                <ul style="margin-top: auto;">
-                                    <li>The key is only visible to users with whom it has been shared. Click <a
-                                            target="_blank"
-                                            href="https://glitch.com/edit/#!/fortunate-likeable-confidence?path=.env%3A6%3A52">here</a>
-                                        to view the key.
-                                    </li>
-                                </ul>
-                            </li>
-                            
-                        </ol>
-                    </div>
-                </article>
-            </div>
-        </div>
-    </div>
-
-    <h2 class="title is-3">Run Scraper</h2>
-
-    <div class="card">
-        <div class="card-content">
-            <div class="content">
-                <p class="subtitle">Specify the dates to be scraped below.
+  <div class="card" style="margin-top: 2em;">
+    <header class="card-header"></header>
+    <div class="card-content">
+      <div class="content">
+        <article class="message is-info">
+          <div class="message-header">
+            <p>Initial Setup</p>
+          </div>
+          <div class="message-body">
+            <p>Please set up a captcha app to solve the GlobalGiving login
+              captcha.</p>
+            <ol>
+              <li>Download the desktop captcha app for
+                <a
+                  target="_blank"
+                  href="https://github.com/rucaptcha/bot-x/releases/download/v0.54/x-bot-en-v0.54.zip"
+                >Windows
+                </a>
+                or
+                <a
+                  href="https://play.google.com/store/apps/details?id=com.rucaptcha.bot"
+                >Android</a>.
+              </li>
+              <li>Windows:
                 <ul>
-                    <li>Leave <strong>Scrape from</strong> blank to scrape from <strong>{{startDate}}</strong>.</li>
-                    <li>Leave <strong>to before</strong> blank to scrape to before <strong>{{endDate}}</strong>.</li>
+                  <li>Extract the contents of the downloaded zip file to your
+                    computer.</li>
+                  <li>Double click RuCaptchaBot.exe to start the app.</li>
+                  <li>On the screen titled
+                    <strong>Authorization</strong>, enter the key and click
+                    "On..." to save the key.</li>
+                  <li>Click
+                    <strong>Start</strong>
+                    to start receiving GlobalGiving login captchas.</li>
                 </ul>
-                </p>
-                <div class="field">
-                    <label class="label" for="startDate">Scrape from&nbsp;</label>
-                    <div class="control">
-                        <input id="startDate" class="input" type="text" placeholder="{{startDate}}">
-                    </div>
-                </div>
-                <div class="field">
-                    <label class="label" for="endDate">&nbsp;to before</label>
-                    <div class="control">
-                        <input id="endDate" class="input" type="text" placeholder="{{endDate}}">
-                    </div>
-                </div>
-                <div class="field is-grouped is-grouped-centered">
-                    <button class="button is-link" onclick="handleScrape()">Scrape</button>
-                </div>
-            </div>
-        </div>
+              </li>
+              <li>Android:
+                <ul>
+                  <li>Open the app and enter the key to begin receiving
+                    GlobalGiving login captchas.</li>
+                </ul>
+              </li>
+            </ol>
+          </div>
+        </article>
+        <article class="message is-warn">
+          <div class="message-body">
+            Click
+            <a
+              target="_blank"
+              href="https://glitch.com/edit/#!/fortunate-likeable-confidence?path=.env%3A6%3A52"
+            >here</a>
+            to view the key. The key is only visible to users with whom it has
+            been shared.
+          </div>
+        </article>
+      </div>
     </div>
+  </div>
+
+  <h2 class="title is-3">Run Scraper</h2>
+
+  <div class="card">
+    <div class="card-content">
+      <div class="content">
+        <p class="subtitle">Specify the dates to be scraped below.
+          <ul>
+            <li>Leave
+              <strong>Scrape from</strong>
+              blank to scrape from
+              <strong>{{startDate}}</strong>.</li>
+            <li>Leave
+              <strong>to before</strong>
+              blank to scrape to before
+              <strong>{{endDate}}</strong>.</li>
+          </ul>
+        </p>
+        <div class="field">
+          <label class="label" for="startDate">Scrape from&nbsp;</label>
+          <div class="control">
+            <input
+              id="startDate"
+              class="input"
+              type="text"
+              placeholder="{{startDate}}"
+            />
+          </div>
+        </div>
+        <div class="field">
+          <label class="label" for="endDate">&nbsp;to before</label>
+          <div class="control">
+            <input
+              id="endDate"
+              class="input"
+              type="text"
+              placeholder="{{endDate}}"
+            />
+          </div>
+        </div>
+        <div class="field is-grouped is-grouped-centered">
+          <button
+            class="button is-link"
+            onclick="handleScrape()"
+          >Scrape</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
