@@ -39,7 +39,7 @@ app.use(express.static('public'));
 app.use(logger); //Tells the app to send all requests through the 'logger' function
 // app.use(app.router); //Tells the app to use the router
 
-const PAGE_TITLE = prefix => `${prefix} | VFAES GG Scraper`;
+const PAGE_TITLE = prefix => `${prefix} | VFAES GlobalGiving Scraper`;
 
 app.get('/', (req, res) => {
     let endDate = DateTime.now();
