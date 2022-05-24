@@ -86,8 +86,9 @@ app.get('/scrape', (req, res) => {
             // res.header('Content-Type', 'text/csv');
             // res.attachment(r.resultsFilename);
             // res.send(r.results);
-            !!r.failures && !!r.failures.length &&
-            console.log(`${r.failures.length} processing failures:\n`, failuresString(r.failures));
+          let numFailures = !!r.failures && !!r.failures.length ? r.failures.length : 0;
+            !!numFailures &&
+            console.log(`${numFailures} processing failure${numFailures === 1 ? '' : 's'}:\n`, failuresString(r.failures));
             console.log(`Emailing results file to ${process.env.RECIPIENT_EMAILS}...`);
             emailResults(r, startDate, endDate);
         }
