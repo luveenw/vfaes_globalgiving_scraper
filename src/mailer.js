@@ -17,8 +17,9 @@ const dateRangeStr = (startDate, endDate) => `${startDate.toFormat(Y_M_D)} to be
 export const failuresString = failures => {
     failures.map(({field, result}) => failureString(field, result)).join('\n');
 };
+
 const failureString = (f, r) =>
-    `Failed to process ${f} for donation ID ${r.donationId} on ${r.donationDate.toFormat(DONATION_DATE_PATTERN)} \
+    `Failed to process ${f} for donation ID ${r.donationId} on ${r.donationDate} \
 by ${r.donorName} of $${r.totalAmountUSD}`;
 
 const sendMail = (mailOptions) => {
