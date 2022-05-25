@@ -1,11 +1,12 @@
 <script>
   const handleScrape = () => { let startDate =
   document.querySelector("#startDate").value; let endDate =
-  document.querySelector("#endDate").value; let link = '/scrape'; let
+  document.querySelector("#endDate").value; let isTestRun =
+  document.querySelector("#isTestRun").checked; let link = '/scrape'; let
   queryParams = []; if (!!startDate) { queryParams.push(`start=${startDate}`); }
-  if (!!endDate) { queryParams.push(`end=${endDate}`); } if
-  (!!queryParams.length) { link = `${link}?${queryParams.join('&')}` }
-  window.location = link; }
+  if (!!endDate) { queryParams.push(`end=${endDate}`); } if (!!isTestRun)
+  {queryParams.push(`isTestRun=${isTestRun}`)} if (!!queryParams.length) { link
+  = `${link}?${queryParams.join('&')}` } window.location = link; }
 </script>
 <div class="container">
   <div class="card" style="margin-top: 2em;">
@@ -113,19 +114,22 @@
           </div>
           <div class="field">
             <label class="checkbox">
-              <input type="checkbox" />
+              <input id="isTestRun" type="checkbox" />
               Do a test run (results will be emailed to
-              <strong>{{testRecipientEmails}}</strong>. Leave this unchecked for normal usage)
+              <strong>{{testRecipientEmails}}</strong>. Leave this unchecked for
+              normal usage)
             </label>
           </div>
         </form>
-        <div class="field is-grouped is-grouped-centered">
-          <button
-            class="button is-link"
-            onclick="handleScrape()"
-          >Scrape</button>
-        </div>
+        <!--         <div class="field is-grouped is-grouped-centered">
+          
+        </div> -->
       </div>
     </div>
+    <footer class="card-footer">
+      <button
+        class="card-footer-item button is-link"
+        onclick="handleScrape()"
+      >Scrape</button></footer>
   </div>
 </div>

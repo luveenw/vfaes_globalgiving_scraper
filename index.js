@@ -57,8 +57,10 @@ app.get('/', (req, res) => {
 app.get('/scrape', (req, res) => {
     let startDateParam = req.query.start;
     let endDateParam = req.query.end;
+    let isTestRunParam = req.query.isTestRun;
     let startDate = !!startDateParam && DateTime.fromFormat(startDateParam, Y_M_D) || DateTime.now().minus({months: 1});
     let endDate = !!endDateParam && DateTime.fromFormat(endDateParam, Y_M_D) || DateTime.now();
+    let isTestRun = 
     if (startDate > endDate) {
         let temp = startDate;
         startDate = endDate;
