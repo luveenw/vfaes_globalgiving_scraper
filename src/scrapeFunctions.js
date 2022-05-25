@@ -91,13 +91,13 @@ const donorEmail = async (page, result) => {
     let email = '';
     if (!!result.donorProfileLink) {
         await gotoUrl(page, result.donorProfileLink);
-        // REPLACE WITH THIS REAL PAGE NAV CODE
+        // REPLACE THIS WITH REAL PAGE NAV CODE
         // await page.setContent(fs.readFileSync(LOCAL_DONOR_PROFILE_URL).toString());
         // await page.$("body");
         let emailField = elementForQuery(page, DONOR_EMAIL_TEXT_ID);
         if (!!emailField) {
             // TODO luveenw verify fixed row 1155 reporting Error: failed to find element matching selector "input#thankyou_to"
-            email = await page.$eval(DONOR_EMAIL_TEXT_ID, el => el.getAttribute("value")) || '';
+            email = await page.$eval(DONOR_EMAIL_TEXT_ID, el => !!el && el.getAttribute("value")) || '';
         }
     }
     return email;

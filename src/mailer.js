@@ -16,7 +16,7 @@ const MAIL = nodemailer.createTransport({
 const dateRangeStr = (startDate, endDate) =>
   `${startDate.toFormat(Y_M_D)} to before ${endDate.toFormat(Y_M_D)}`;
 export const failuresString = (failures) => {
-  console.log('Processing Failures:\n', failures);
+  console.log("Processing Failures:\n", failures);
   failures
     .map(({ field, result }) => {
       console.log(
@@ -28,9 +28,12 @@ export const failuresString = (failures) => {
 };
 
 const failureString = (f, r) => {
-  console.log(`Generating failure string - result ${r} | field ${f}`);
-  return `Failed to process ${f} for donation ID ${r.donationId} on ${r.donationDate} \
+  const string = `Failed to process ${f} for donation ID ${r.donationId} on ${r.donationDate} \
 by ${r.donorName} of $${r.totalAmountUSD}`;
+  console.log(
+    `Generating failure string: result ${r} | field ${f} - ${string}`
+  );
+  return string;
 };
 
 const sendMail = (mailOptions) => {
