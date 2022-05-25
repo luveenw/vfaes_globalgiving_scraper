@@ -3,9 +3,14 @@ import process from "process";
 import luxon from "luxon";
 import { DONATION_DATE_PATTERN, Y_M_D, Y_M_D_TIME_EMAIL } from "./constants.js";
 
-const ISSUES_MESSAGE = numFailures => {const suffix = numFailures === 1 ? '': 's';return `Processing Issue${suffix}:
+const issuesMessage = (numFailures) => {
+  const isOneFailure = numFailures === 1;
+  const suffix = isOneFailure ? "" : "s";
+  const notSuffix = isOneFailure ? "s" : "";
+  return `Processing Issue${suffix}:
 
-The following data row${suffix} contain${} fields that could not be processed. The corresponding report row${suffix} may contain inaccurate data for these specific fields.;
+The following data row${suffix} contain${notSuffix} fields that could not be processed. The corresponding report row${suffix} may contain inaccurate data for these specific fields.`;
+};
 
 const { DateTime } = luxon;
 
@@ -21,7 +26,7 @@ const dateRangeStr = (startDate, endDate) =>
   `${startDate.toFormat(Y_M_D)} to before ${endDate.toFormat(Y_M_D)}`;
 
 export const failuresString = (failures) => {
-  console.log(ISSUES_MESSAGE, failures);
+  console.log(issuesMessage(failures.length), failures);
   failures
     .map(({ field, result, err }, index) => {
       console.log(
@@ -33,7 +38,9 @@ export const failuresString = (failures) => {
 };
 
 const failureString = (i, f, r, e) => {
-  const string = `${i + 1}. Failed to process ${f} for donation ID ${r.donationId} amount $${r.totalAmountUSD} on ${r.donationDate} \
+  const string = `${i + 1}. Failed to process ${f} for donation ID ${
+    r.donationId
+  } amount $${r.totalAmountUSD} on ${r.donationDate} \
 by ${r.donorName}. Error:
 
 ${e}`;
@@ -53,11 +60,12 @@ const sendMail = (mailOptions) => {
   });
 };
 
-export const getRecipients = isTestRun => {
-  console.log('Get recipients for test run? ', isTestRun);
-  return !!isTestRun ? process.env.TEST_RECIPIENT_EMAILS : process.env.RECIPIENT_EMAILS;
-}
-
+export const getRecipients = (isTestRun) => {
+  console.log("Get recipients for test run? ", isTestRun);
+  return !!isTestRun
+    ? process.env.TEST_RECIPIENT_EMAILS
+    : process.env.RECIPIENT_EMAILS;
+};
 
 export const emailResults = (r, startDate, endDate, isTestRun) => {
   let mainEmailText = `Donor data for ${dateRangeStr(startDate, endDate)}. \
@@ -66,9 +74,9 @@ Generated at ${DateTime.now().toFormat(Y_M_D_TIME_EMAIL)}`;
   let failuresText = !!numFailures
     ? `
     
-    ${numFailures} Processing Issue${numFailures === 1 ? "" : "s"}:
+    ${numFailures} ${issuesMessage(numFailures)}
       
-      ${failuresString(r.failures)}`
+    ${failuresString(r.failures)}`
     : "";
   sendMail({
     from: process.env.SCRAPER_EMAIL_FROM,
