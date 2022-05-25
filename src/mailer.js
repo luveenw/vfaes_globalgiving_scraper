@@ -28,7 +28,7 @@ const dateRangeStr = (startDate, endDate) =>
 export const failuresString = (failures) => {
   const numFailures = failures.length;
 
-  console.log(issuesMessage(numFailures), failures);
+  //console.log(issuesMessage(numFailures), failures);
 
   return failures
     .map(({ field, result, err }, index) => {
@@ -81,6 +81,8 @@ ${issuesMessage(numFailures)}
       
 ${failuresString(r.failures)}`
     : "";
+  
+  console.log("Failures text being plugged into email:\n", failuresText);
   sendMail({
     from: process.env.SCRAPER_EMAIL_FROM,
     replyTo: process.env.REPLY_TO_EMAIL,

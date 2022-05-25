@@ -93,8 +93,8 @@ app.get('/scrape', (req, res) => {
             // res.attachment(r.resultsFilename);
             // res.send(r.results);
           let numFailures = (!!r.failures && !!r.failures.length) ? r.failures.length : 0;
-            !!numFailures &&
-            console.log(`${numFailures} processing failure${numFailures === 1 ? '' : 's'}:
+            
+            console.log(`Render Method: ${numFailures} processing failure${numFailures === 1 ? '' : 's'}:
 
 `, failuresString(r.failures));
             console.log(`Emailing results file to ${recipients}...`);
