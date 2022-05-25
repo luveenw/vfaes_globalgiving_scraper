@@ -16,7 +16,7 @@ const MAIL = nodemailer.createTransport({
 const dateRangeStr = (startDate, endDate) =>
   `${startDate.toFormat(Y_M_D)} to before ${endDate.toFormat(Y_M_D)}`;
 export const failuresString = (failures) => {
-  failures.map(({ field, result }) => failureString(field, result)).join("\n");
+  failures.map(({ field, result }) => {console.log(``); failureString(field, result);}).join("\n");
 };
 
 const failureString = (f, r) =>
