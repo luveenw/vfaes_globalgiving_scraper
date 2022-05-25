@@ -18,7 +18,7 @@ const dateRangeStr = (startDate, endDate) =>
 export const failuresString = (failures) => {
   console.log("Processing Failures:\n", failures);
   failures
-    .map(({ field, result }) => {
+    .map(({ field, result, err }) => {
       console.log(
         `Delegating to function to generate failure string for field ${field} of result ${result}...`
       );
