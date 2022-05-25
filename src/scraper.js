@@ -77,6 +77,7 @@ const scrapeUserData = async (startDate, endDate) => {
         ({browser, page, loginResult} = await performLogin());
         if (!loginResult) {
             !!browser && await browser.close();
+            throw new Error('Unable to login. Login captcha was not solved, or was solved incorrectly');
         } else {
             console.log('Logged in.');
             page = await gotoDashboard(page);
@@ -91,6 +92,7 @@ const scrapeUserData = async (startDate, endDate) => {
     } catch (e) {
         console.log("Error:", e);
         !!browser && await browser.close();
+        throw e;
     }
 };
 
