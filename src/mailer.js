@@ -7,7 +7,7 @@ const issuesMessage = (numFailures) => {
   const isOneFailure = numFailures === 1;
   const suffix = isOneFailure ? "" : "s";
   const notSuffix = isOneFailure ? "s" : "";
-  return `Processing Issue${suffix}:
+  return `${numFailures} Processing Issue${suffix}:
 
 The following data row${suffix} contain${notSuffix} fields that could not be processed. The corresponding report row${suffix} may contain inaccurate data for these specific fields.`;
 };
@@ -32,7 +32,7 @@ export const failuresString = (failures) => {
       console.log(
         `Delegating to function to generate failure string for field ${field} of result ${result} due to error ${err}...`
       );
-      failureString(index, field, result, err);
+      return failureString(index, field, result, err);
     })
     .join("\n\n");
 };
@@ -74,7 +74,7 @@ Generated at ${DateTime.now().toFormat(Y_M_D_TIME_EMAIL)}`;
   let failuresText = !!numFailures
     ? `
     
-${numFailures} ${issuesMessage(numFailures)}
+${issuesMessage(numFailures)}
       
 ${failuresString(r.failures)}`
     : "";

@@ -95,8 +95,8 @@ app.get('/scrape', (req, res) => {
           let numFailures = (!!r.failures && !!r.failures.length) ? r.failures.length : 0;
             !!numFailures &&
             console.log(`${numFailures} processing failure${numFailures === 1 ? '' : 's'}:
-            
-            `, failuresString(r.failures));
+
+`, failuresString(r.failures));
             console.log(`Emailing results file to ${recipients}...`);
             emailResults(r, startDate, endDate, isTestRun);
         }
