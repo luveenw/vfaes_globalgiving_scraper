@@ -49,7 +49,8 @@ app.get('/', (req, res) => {
             layout: 'index',
             pageTitle: PAGE_TITLE('Welcome'),
             startDate: startDate.toFormat(Y_M_D),
-            endDate: endDate.toFormat(Y_M_D)
+            endDate: endDate.toFormat(Y_M_D),
+            testRecipientEmails: process.env.TEST_RECIPIENT_EMAILS
         });
 });
 
@@ -88,7 +89,9 @@ app.get('/scrape', (req, res) => {
             // res.send(r.results);
           let numFailures = (!!r.failures && !!r.failures.length) ? r.failures.length : 0;
             !!numFailures &&
-            console.log(`${numFailures} processing failure${numFailures === 1 ? '' : 's'}:\n`, failuresString(r.failures));
+            console.log(`${numFailures} processing failure${numFailures === 1 ? '' : 's'}:
+            
+            `, failuresString(r.failures));
             console.log(`Emailing results file to ${process.env.RECIPIENT_EMAILS}...`);
             emailResults(r, startDate, endDate);
         }
