@@ -49,9 +49,11 @@ const sendMail = (mailOptions) => {
   });
 };
 
-const getRecipients = isTestRun => 
-  !!isTestRun ? process.env.TEST_RECIPIENT_EMAILS : process.env.RECIPIENT_EMAILS;
-;
+const getRecipients = isTestRun => {
+  console.log('Get recipients for test run? ', isTestRun);
+  return !!isTestRun ? process.env.TEST_RECIPIENT_EMAILS : process.env.RECIPIENT_EMAILS;
+}
+
 
 export const emailResults = (r, startDate, endDate, isTestRun) => {
   let mainEmailText = `Donor data for ${dateRangeStr(startDate, endDate)}. \
