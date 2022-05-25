@@ -69,6 +69,7 @@ app.get('/scrape', (req, res) => {
     }
     const startDateStr = startDate.toFormat(Y_M_D);
     const endDateStr = endDate.toFormat(Y_M_D);
+    const recipients = getRecipients(isTestRun);
     const scrapingMsg = `Scraping donor data from ${startDateStr} to ${endDateStr} (test run: ${isTestRun})`;
     console.log(scrapingMsg);
     res.render('scrapingStarted',
@@ -77,7 +78,7 @@ app.get('/scrape', (req, res) => {
             pageTitle: PAGE_TITLE(scrapingMsg),
             startDate: startDateStr,
             endDate: endDateStr,
-            recipientEmails: getRecipients(isTestRun),
+            recipientEmails: recipients,
             isTestRun,
             requestEmail: `${process.env.REPLY_TO_EMAIL}?subject=Request to Add VFAES GG Scraper Recipient&body=Hello - please add me to the mailing list for VFAES GlobalGiving data. Thank you!`
         });
@@ -96,7 +97,7 @@ app.get('/scrape', (req, res) => {
             console.log(`${numFailures} processing failure${numFailures === 1 ? '' : 's'}:
             
             `, failuresString(r.failures));
-            console.log(`Emailing results file to ${process.env.RECIPIENT_EMAILS}...`);
+            console.log(`Emailing results file to ${recipients}...`);
             emailResults(r, startDate, endDate, isTestRun);
         }
     }).catch(e => {

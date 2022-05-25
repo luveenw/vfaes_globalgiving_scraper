@@ -215,7 +215,7 @@ const processResults = async (page, results) => {
                 // console.log(`Processed value ${processedValue} for ${field}`);
                 processedResult[field] = await processor(page, result);
             } catch (e) {
-                failures.push({result, field, e});
+                failures.push({result, field, err: e});
             }
         }
         // console.log("result:", Object.entries(result));
