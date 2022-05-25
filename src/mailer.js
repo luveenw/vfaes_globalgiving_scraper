@@ -43,7 +43,7 @@ const failureString = (i, f, r, e) => {
   } amount $${r.totalAmountUSD} on ${r.donationDate} \
 by ${r.donorName}. Error:
 
-${e}`;
+${!!e ? e.stack : e}`;
   console.log(
     `Generating failure string: result ${r} | field ${f} - ${string}`
   );
@@ -74,9 +74,9 @@ Generated at ${DateTime.now().toFormat(Y_M_D_TIME_EMAIL)}`;
   let failuresText = !!numFailures
     ? `
     
-    ${numFailures} ${issuesMessage(numFailures)}
+${numFailures} ${issuesMessage(numFailures)}
       
-    ${failuresString(r.failures)}`
+${failuresString(r.failures)}`
     : "";
   sendMail({
     from: process.env.SCRAPER_EMAIL_FROM,
