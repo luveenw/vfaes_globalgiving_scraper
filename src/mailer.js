@@ -9,7 +9,7 @@ const issuesMessage = (numFailures) => {
   const notSuffix = isOneFailure ? "s" : "";
   return `${numFailures} Processing Issue${suffix}:
 
-The following data row${suffix} contain${notSuffix} fields that could not be processed. The corresponding report row${suffix} may contain inaccurate data for these specific fields.`;
+  The following data row${suffix} contain${notSuffix} fields that could not be processed. The corresponding report row${suffix} may contain inaccurate data for these specific fields.`;
 };
 
 const { DateTime } = luxon;
