@@ -36,11 +36,15 @@ const sendMail = (mailOptions) => {
 export const emailResults = (r, startDate, endDate) => {
   let mainEmailText = `Donor data for ${dateRangeStr(startDate, endDate)}. \
 Generated at ${DateTime.now().toFormat(Y_M_D_TIME_EMAIL)}`;
-  let numFailures = !!r.failures && !!r.failures.length ? r.failures.length : 0;
+  let numFailures = (!!r.failures && !!r.failures.length) ? r.failures.length : 0;
   let failuresText = !!numFailures
-    ? `\n\n${numFailures} Processing Failure${
+    ? `
+    
+    ${numFailures} Processing Failure${
         numFailures === 1 ? "" : "s"
-      }:\\n\\n${failuresString(r.failures)}`
+      }:
+      
+      ${failuresString(r.failures)}`
     : "";
   sendMail({
     from: process.env.SCRAPER_EMAIL_FROM,
