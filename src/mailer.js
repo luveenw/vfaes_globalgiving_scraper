@@ -3,6 +3,10 @@ import process from "process";
 import luxon from "luxon";
 import { DONATION_DATE_PATTERN, Y_M_D, Y_M_D_TIME_EMAIL } from "./constants.js";
 
+const ISSUES_MESSAGE = numFailures => {const suffix = numFailures === 1 ? '': 's';return `Processing Issue${suffix}:
+
+The following data row${suffix} contain${} fields that could not be processed. The corresponding report row${suffix} may contain inaccurate data for these specific fields.;
+
 const { DateTime } = luxon;
 
 const MAIL = nodemailer.createTransport({
@@ -17,7 +21,7 @@ const dateRangeStr = (startDate, endDate) =>
   `${startDate.toFormat(Y_M_D)} to before ${endDate.toFormat(Y_M_D)}`;
 
 export const failuresString = (failures) => {
-  console.log("Processing Failures:\n", failures);
+  console.log(ISSUES_MESSAGE, failures);
   failures
     .map(({ field, result, err }, index) => {
       console.log(
@@ -29,8 +33,8 @@ export const failuresString = (failures) => {
 };
 
 const failureString = (i, f, r, e) => {
-  const string = `${i}. Failed to process ${f} for donation ID ${r.donationId} on ${r.donationDate} \
-by ${r.donorName} of $${r.totalAmountUSD}. Error:
+  const string = `${i + 1}. Failed to process ${f} for donation ID ${r.donationId} amount $${r.totalAmountUSD} on ${r.donationDate} \
+by ${r.donorName}. Error:
 
 ${e}`;
   console.log(
@@ -62,7 +66,7 @@ Generated at ${DateTime.now().toFormat(Y_M_D_TIME_EMAIL)}`;
   let failuresText = !!numFailures
     ? `
     
-    ${numFailures} Processing Failure${numFailures === 1 ? "" : "s"}:
+    ${numFailures} Processing Issue${numFailures === 1 ? "" : "s"}:
       
       ${failuresString(r.failures)}`
     : "";
