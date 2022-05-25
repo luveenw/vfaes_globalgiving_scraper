@@ -49,7 +49,7 @@ const sendMail = (mailOptions) => {
   });
 };
 
-const getRecipients = isTestRun => {
+export const getRecipients = isTestRun => {
   console.log('Get recipients for test run? ', isTestRun);
   return !!isTestRun ? process.env.TEST_RECIPIENT_EMAILS : process.env.RECIPIENT_EMAILS;
 }

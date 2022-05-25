@@ -21,7 +21,7 @@
             <p>Who can see the scraped data?</p>
           </div>
           <div class="message-body">
-            <p>Results will be emailed to 📪
+            <p>{{#if isTestRun}}<span>This is a test run. </span>{{/if}}Results will be emailed to 📪
               <strong>{{recipientEmails}}.</strong></p>
             <p><strong><a
                   href="mailto:{{requestEmail}}"

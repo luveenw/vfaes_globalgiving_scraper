@@ -5,7 +5,7 @@ import express from 'express';
 import handlebars from 'express-handlebars';
 import luxon from 'luxon';
 import {isDateAfter, isDateBetween, runScraper} from './src/scraper.js';
-import {emailAppError, emailResults, failuresString} from './src/mailer.js';
+import {getRecipients, emailAppError, emailResults, failuresString} from './src/mailer.js';
 import {Y_M_D} from './src/constants.js';
 
 const {DateTime} = luxon;
@@ -77,7 +77,8 @@ app.get('/scrape', (req, res) => {
             pageTitle: PAGE_TITLE(scrapingMsg),
             startDate: startDateStr,
             endDate: endDateStr,
-            recipientEmails: process.env.RECIPIENT_EMAILS,
+            recipientEmails: getRecipients(isTestRun),
+            isTestRun,
             requestEmail: `${process.env.REPLY_TO_EMAIL}?subject=Request to Add VFAES GG Scraper Recipient&body=Hello - please add me to the mailing list for VFAES GlobalGiving data. Thank you!`
         });
     runScraper(startDate, endDate).then(r => {
