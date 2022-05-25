@@ -26,8 +26,20 @@ const dateRangeStr = (startDate, endDate) =>
   `${startDate.toFormat(Y_M_D)} to before ${endDate.toFormat(Y_M_D)}`;
 
 export const failuresString = (failures) => {
-  console.log(issuesMessage(failures.length), failures);
-  failures
+  const numFailures = failures.length;
+  let strings = [];
+
+  console.log(issuesMessage(numFailures), failures);
+
+  for (let i = 0; i < numFailures; i++) {
+    const { field, result, err } = failures[i];
+    console.log(
+        `Delegating to function to generate failure string for field ${field} of result ${result} due to error ${err}...`
+      );
+      strings.push(failureString(i, field, result, err));
+  }
+  return strings.join("\n\n");
+  return failures
     .map(({ field, result, err }, index) => {
       console.log(
         `Delegating to function to generate failure string for field ${field} of result ${result} due to error ${err}...`
