@@ -86,28 +86,32 @@
               <strong>{{endDate}}</strong>.</li>
           </ul>
         </p>
-        <div class="field">
-          <label class="label" for="startDate">Scrape from&nbsp;</label>
-          <div class="control">
-            <input
-              id="startDate"
-              class="input"
-              type="text"
-              placeholder="{{startDate}}"
-            />
+        <form>
+          <div class="field">
+            <label class="label" for="startDate">Scrape from&nbsp;</label>
+            <div class="control">
+              <input
+                id="startDate"
+                class="input"
+                type="text"
+                autocomplete="on"
+                placeholder="{{startDate}}"
+              />
+            </div>
           </div>
-        </div>
-        <div class="field">
-          <label class="label" for="endDate">&nbsp;to before</label>
-          <div class="control">
-            <input
-              id="endDate"
-              class="input"
-              type="text"
-              placeholder="{{endDate}}"
-            />
+          <div class="field">
+            <label class="label" for="endDate">&nbsp;to before</label>
+            <div class="control">
+              <input
+                id="endDate"
+                class="input"
+                type="text"
+                autocomplete="on"
+                placeholder="{{endDate}}"
+              />
+            </div>
           </div>
-        </div>
+        </form>
         <div class="field is-grouped is-grouped-centered">
           <button
             class="button is-link"

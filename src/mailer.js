@@ -16,12 +16,22 @@ const MAIL = nodemailer.createTransport({
 const dateRangeStr = (startDate, endDate) =>
   `${startDate.toFormat(Y_M_D)} to before ${endDate.toFormat(Y_M_D)}`;
 export const failuresString = (failures) => {
-  failures.map(({ field, result }) => {console.log(``); failureString(field, result);}).join("\n");
+  console.log('Processing Failures:\n', failures);
+  failures
+    .map(({ field, result }) => {
+      console.log(
+        `Delegating to function to generate failure string for field ${field} of result ${result}...`
+      );
+      failureString(field, result);
+    })
+    .join("\n");
 };
 
-const failureString = (f, r) =>
-  `Failed to process ${f} for donation ID ${r.donationId} on ${r.donationDate} \
+const failureString = (f, r) => {
+  console.log(`Generating failure string - result ${r} | field ${f}`);
+  return `Failed to process ${f} for donation ID ${r.donationId} on ${r.donationDate} \
 by ${r.donorName} of $${r.totalAmountUSD}`;
+};
 
 const sendMail = (mailOptions) => {
   MAIL.sendMail(mailOptions, (error, info) => {
@@ -36,13 +46,11 @@ const sendMail = (mailOptions) => {
 export const emailResults = (r, startDate, endDate) => {
   let mainEmailText = `Donor data for ${dateRangeStr(startDate, endDate)}. \
 Generated at ${DateTime.now().toFormat(Y_M_D_TIME_EMAIL)}`;
-  let numFailures = (!!r.failures && !!r.failures.length) ? r.failures.length : 0;
+  let numFailures = !!r.failures && !!r.failures.length ? r.failures.length : 0;
   let failuresText = !!numFailures
     ? `
     
-    ${numFailures} Processing Failure${
-        numFailures === 1 ? "" : "s"
-      }:
+    ${numFailures} Processing Failure${numFailures === 1 ? "" : "s"}:
       
       ${failuresString(r.failures)}`
     : "";
