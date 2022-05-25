@@ -60,7 +60,8 @@ app.get('/scrape', (req, res) => {
     let isTestRunParam = req.query.isTestRun;
     let startDate = !!startDateParam && DateTime.fromFormat(startDateParam, Y_M_D) || DateTime.now().minus({months: 1});
     let endDate = !!endDateParam && DateTime.fromFormat(endDateParam, Y_M_D) || DateTime.now();
-    let isTestRun = 
+    let isTestRun = !!isTestRunParam;
+
     if (startDate > endDate) {
         let temp = startDate;
         startDate = endDate;
@@ -68,7 +69,7 @@ app.get('/scrape', (req, res) => {
     }
     const startDateStr = startDate.toFormat(Y_M_D);
     const endDateStr = endDate.toFormat(Y_M_D);
-    const scrapingMsg = `Scraping donor data from ${startDateStr} to ${endDateStr}`;
+    const scrapingMsg = `Scraping donor data from ${startDateStr} to ${endDateStr} (test run: ${isTestRun})`;
     console.log(scrapingMsg);
     res.render('scrapingStarted',
         {
@@ -83,7 +84,7 @@ app.get('/scrape', (req, res) => {
         if (!!r.error) {
             console.log('Error during scraping:', r.error);
             console.log('Error stacktrace:', r.error.stack);
-            emailAppError(r.error, startDate, endDate);
+            emailAppError(r.error, startDate, endDate, isTestRun);
         } else {
             // console.log('Sending results file to browser for download...');
             // res.header('Content-Type', 'text/csv');
@@ -95,12 +96,12 @@ app.get('/scrape', (req, res) => {
             
             `, failuresString(r.failures));
             console.log(`Emailing results file to ${process.env.RECIPIENT_EMAILS}...`);
-            emailResults(r, startDate, endDate);
+            emailResults(r, startDate, endDate, isTestRun);
         }
     }).catch(e => {
         console.log('Unknown error encountered:', e);
         console.log('Error stacktrace:', e.stack);
-        emailAppError(e, startDate, endDate);
+        emailAppError(e, startDate, endDate, isTestRun);
     });
 });
 

@@ -49,7 +49,11 @@ const sendMail = (mailOptions) => {
   });
 };
 
-export const emailResults = (r, startDate, endDate) => {
+const getRecipients = isTestRun => 
+  !!isTestRun ? process.env.TEST_RECIPIENT_EMAILS : process.env.RECIPIENT_EMAILS;
+;
+
+export const emailResults = (r, startDate, endDate, isTestRun) => {
   let mainEmailText = `Donor data for ${dateRangeStr(startDate, endDate)}. \
 Generated at ${DateTime.now().toFormat(Y_M_D_TIME_EMAIL)}`;
   let numFailures = !!r.failures && !!r.failures.length ? r.failures.length : 0;
@@ -63,7 +67,7 @@ Generated at ${DateTime.now().toFormat(Y_M_D_TIME_EMAIL)}`;
   sendMail({
     from: process.env.SCRAPER_EMAIL_FROM,
     replyTo: process.env.REPLY_TO_EMAIL,
-    to: process.env.RECIPIENT_EMAILS,
+    to: getRecipients(isTestRun),
     subject: `VFAES GlobalGiving Donor Data (${dateRangeStr(
       startDate,
       endDate
@@ -79,14 +83,14 @@ Generated at ${DateTime.now().toFormat(Y_M_D_TIME_EMAIL)}`;
   });
 };
 
-export const emailAppError = (e, startDate, endDate) => {
+export const emailAppError = (e, startDate, endDate, isTestRun) => {
   let dateRange = dateRangeStr(startDate, endDate);
   let mainEmailText = `An error was encountered while generating donor data for ${dateRange}. Please try again!
 This email was generated at ${DateTime.now().toFormat(Y_M_D_TIME_EMAIL)}.`;
   sendMail({
     from: process.env.SCRAPER_EMAIL_FROM,
     replyTo: process.env.REPLY_TO_EMAIL,
-    to: [process.env.RECIPIENT_EMAILS, process.env.REPLY_TO_EMAIL].join(","),
+    to: getRecipients(isTestRun),
     subject: `[ERROR] VFAES GlobalGiving Donor Data (${dateRange})`,
     text: `${mainEmailText}
         
