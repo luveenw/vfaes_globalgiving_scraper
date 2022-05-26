@@ -66,7 +66,7 @@ export const runScraper = async (startDate, endDate) => {
         return {
             results: resultsString(data.results),
             failures: data.failures,
-            resultsFilename: getResultsFilename(endDate)
+            resultsFilename: getResultsFilename(startDate, endDate)
         };
     } catch (e) {
         console.log("Error:", e);
@@ -244,8 +244,8 @@ const gotoDashboard = async (page, pageNumber = 1) => {
     return page;
 };
 
-export const getResultsFilename = date =>
-    `donations_ending_${date.toFormat(Y_M_D)}_${DateTime.now().toFormat(Y_M_D_TIME)}_${Math.floor(Math.random() * 9999)}.csv`;
+export const getResultsFilename = (start, end) =>
+    `donations_${start.toFormat(Y_M_D)}_through_before_${end.toFormat(Y_M_D)}_${DateTime.now().toFormat(Y_M_D_TIME)}_${Math.floor(Math.random() * 9999)}.csv`;
 
 /*const gotoNextUserDataPage = async page => {
     if (elementForQuery(page, NEXT_BUTTON_CLASS)) {
