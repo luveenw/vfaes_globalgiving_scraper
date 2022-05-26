@@ -34,17 +34,20 @@ const donationId = async (column) => {
     // console.log(`Donation ID: ${donationIdText}`);
     return result;
 };
+
 const projectId = async (column) => {
     // console.log(`Evaluating project link for column ${column}...`);
     // console.log(`Project ID: ${projectIdText}`);
     return await (await (await column.$('a')).getProperty('innerText')).jsonValue();
 };
+
 const projectLink = async (column) => {
     // console.log(`Evaluating project link for column ${column}...`);
     let projectLinkText = await column.$eval('a', el => el.getAttribute("href"));
     // console.log(`Project link: ${projectLinkText}`);
     return GLOBALGIVING_URL + '/projects' + projectLinkText;
 };
+
 const PROJECT_TITLE_CACHE = {};
 const projectTitle = async (page, result) => {
     // console.log(`Extracting project title using url ${result.projectLink}...`);
@@ -63,6 +66,7 @@ const projectTitle = async (page, result) => {
     PROJECT_TITLE_CACHE[result.projectLink] = projectTitleText;
     return projectTitleText;
 };
+
 const donorName = async (column) => {
     // console.log(`Evaluating donor name for column ${column}...`);
     // console.log(`Donor email link node HTML: ${await (await column.getProperty('innerHTML')).jsonValue()}`);
@@ -70,6 +74,7 @@ const donorName = async (column) => {
     // console.log(`Donor name text: ${donorNameText}`);
     return await (await (await column.$('h4')).getProperty('innerText')).jsonValue();
 };
+
 const donorProfileLink = async (column) => {
     // console.log(`Evaluating donor email link for column ${column}...`);
     // console.log(`Donor email link node HTML: ${await (await column.getProperty('innerHTML')).jsonValue()}`);
@@ -86,6 +91,7 @@ const donorProfileLink = async (column) => {
     // console.log(`Donor email path text: ${donorProfilePath}`);
     return result;
 };
+
 const donorEmail = async (page, result) => {
     // console.log(`Extracting donor email using url ${result.donorProfileLink}...`);
     let email = '';
@@ -102,6 +108,7 @@ const donorEmail = async (page, result) => {
     }
     return email;
 };
+
 const trafficSource = async (column) => {
     // console.log(`Evaluating traffic source for column ${column}...`);
     // let trafficSourceText = await (await column.getProperty('innerText')).jsonValue();
@@ -128,6 +135,7 @@ const recurring = async (column) => {
     // console.log(`Recurring text: ${statusText}`);
     return (!!recurringText && recurringText.indexOf('Yes') >= 0) ? 'Yes' : 'No';
 };
+
 const recurringStatus = async (column) => {
     // console.log(`Evaluating recurring status for column ${column}...`);
     let rsTxt = await (await column.getProperty('innerText')).jsonValue();
@@ -135,6 +143,7 @@ const recurringStatus = async (column) => {
     // console.log(`Recurring status text: ${statusText}`);
     return (!!rsTxt && rsTxt.indexOf('Yes') >= 0 && rsTxt.indexOf('(') >= 0) ? rsTxt.match(/\(.*\)/)[0].slice(1, -1) : '';
 };
+
 const totalAmount = async (column) => {
     let totalAmtText = await (await column.getProperty('innerText')).jsonValue();
     let regexMatch = DECIMAL_OR_INTEGER_REGEX.exec(totalAmtText)[0];
@@ -142,12 +151,14 @@ const totalAmount = async (column) => {
     // console.log(`Total amount: ${totalAmt}`);
     return JSON.parse(regexMatch);
 };
+
 const currency = async (column) => {
     let totalAmtText = await (await column.getProperty('innerText')).jsonValue();
     let firstNumberIndex = DIGIT_REGEX.exec(totalAmtText).index;
     // console.log(`Currency: ${currency}`);
     return totalAmtText.slice(0, firstNumberIndex);
 };
+
 const totalAmountUSD = async (column) => {
     let totalAmtText = await (await column.getProperty('innerText')).jsonValue();
     let regexMatch = DECIMAL_OR_INTEGER_REGEX.exec(totalAmtText)[0];

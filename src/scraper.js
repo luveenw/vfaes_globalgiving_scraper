@@ -30,6 +30,9 @@ import StealthPlugin from "puppeteer-extra-plugin-stealth";
 // const fs = fspkg.promises;
 const {DateTime} = luxon;
 
+/**
+* convenience method used for testing that puppeteer url navigation works as expected
+*/
 export const testRedirects = async () => {
     let browser = await puppeteer.launch();
     let page = await browser.newPage();
@@ -39,6 +42,12 @@ export const testRedirects = async () => {
     console.log(`Project title: ${projectTitleText}`);
     !!browser && await browser.close();
 };
+
+/**
+* Driver method for scraping data.
+* @param startDate the earliest date for which data needs to be scraped
+* @param endDate the date upto which data needs to be scraped, exclusive of this date.
+*/
 export const runScraper = async (startDate, endDate) => {
     puppeteer.use(
         RecaptchaPlugin({
