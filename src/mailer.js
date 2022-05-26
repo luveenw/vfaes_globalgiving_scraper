@@ -9,7 +9,7 @@ const issuesMessage = (numFailures) => {
   const notSuffix = isOneFailure ? "s" : "";
   return `${numFailures} Processing Issue${suffix}:
 
-  The following data row${suffix} contain${notSuffix} fields that could not be processed. The corresponding report row${suffix} may contain inaccurate data for these specific fields.`;
+The following data row${suffix} contain${notSuffix} fields that could not be processed. The corresponding report row${suffix} may contain inaccurate data for these specific fields.`;
 };
 
 const { DateTime } = luxon;
@@ -25,33 +25,19 @@ const MAIL = nodemailer.createTransport({
 const dateRangeStr = (startDate, endDate) =>
   `${startDate.toFormat(Y_M_D)} to before ${endDate.toFormat(Y_M_D)}`;
 
-export const failuresString = (failures) => {
-  const numFailures = failures.length;
-
-  //console.log(issuesMessage(numFailures), failures);
-
-  return failures
-    .map(({ field, result, err }, index) => {
-      console.log(
-        `Delegating to function to generate failure string for field ${field} of result ${result} due to error ${err}...`
-      );
-      return failureString(index, field, result, err);
-    })
+export const failuresString = (failures) =>
+  failures
+    .map(({ field, result, err }, index) =>
+      failureString(index, field, result, err)
+    )
     .join("\n\n");
-};
 
-const failureString = (i, f, r, e) => {
-  const string = `${i + 1}. Failed to process ${f} for donation ID ${
-    r.donationId
-  } amount $${r.totalAmountUSD} on ${r.donationDate} \
+const failureString = (i, f, r, e) =>
+  `${i + 1}. Failed to process ${f} for donation ID \
+${r.donationId} amount $${r.totalAmountUSD} on ${r.donationDate} \
 by ${r.donorName}. Error:
 
 ${!!e ? e.stack : e}`;
-  console.log(
-    `Generating failure string: result ${r} | field ${f} - ${string}`
-  );
-  return string;
-};
 
 const sendMail = (mailOptions) => {
   MAIL.sendMail(mailOptions, (error, info) => {
@@ -81,8 +67,7 @@ ${issuesMessage(numFailures)}
       
 ${failuresString(r.failures)}`
     : "";
-  
-  console.log("Failures text being plugged into email:\n", failuresText);
+
   sendMail({
     from: process.env.SCRAPER_EMAIL_FROM,
     replyTo: process.env.REPLY_TO_EMAIL,
@@ -113,8 +98,8 @@ This email was generated at ${DateTime.now().toFormat(Y_M_D_TIME_EMAIL)}.`;
     subject: `[ERROR] VFAES GlobalGiving Donor Data (${dateRange})`,
     text: `${mainEmailText}
         
-        Error: ${e}
-        
-        Stacktrace: ${e.stack}`,
+Error: ${e}
+
+Stacktrace: ${e.stack}`,
   });
 };
