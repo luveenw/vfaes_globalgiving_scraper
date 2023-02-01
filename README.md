@@ -1,5 +1,5 @@
 # GlobalGiving Report Data Scraper
-I freelance for Voice for Asian Elephants Society (VFAES), a widlife conservation nonprofit working to protect the threatened Asian elephant in India. The team had a pain point with their donor data reporting. Their earnings are spread across a variety of donor management platforms, one of which is GlobalGiving.
+I freelance for Voice for Asian Elephants Society (VFAES), a wildlife conservation nonprofit working to protect the threatened Asian elephant in India. The team had a pain point with their donor data reporting. Their earnings are spread across a variety of donor management platforms, one of which is GlobalGiving.
 
 Collecting donor emails in GlobalGiving's web interface is a days-long manual process. They don't make the information available for download in their reports either. This project instructs a web scraper to log in to Global Giving using VFAES' account information (managed via a hidden secrets file in [this Glitch project](https://glitch.com/edit/#!/fortunate-likeable-confidence), and collects donor information to generate an on-demand report in minutes.
 
