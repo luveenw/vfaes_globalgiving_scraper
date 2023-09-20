@@ -1,7 +1,7 @@
 import nodemailer from "nodemailer";
 import process from "process";
-import luxon from "luxon";
-import { DONATION_DATE_PATTERN, Y_M_D, Y_M_D_TIME_EMAIL } from "./constants.js";
+import { DateTime } from "luxon";
+import { Y_M_D, Y_M_D_TIME_EMAIL } from "./constants.js";
 
 const issuesMessage = (numFailures) => {
   const isOneFailure = numFailures === 1;
@@ -11,8 +11,6 @@ const issuesMessage = (numFailures) => {
 
 The following data row${suffix} contain${notSuffix} fields that could not be processed. The corresponding report row${suffix} may contain inaccurate data for these specific fields.`;
 };
-
-const { DateTime } = luxon;
 
 const MAIL = nodemailer.createTransport({
   service: "gmail",

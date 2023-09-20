@@ -1,5 +1,3 @@
-import luxon from 'luxon';
-
 import {
     DECIMAL_OR_INTEGER_REGEX,
     DIGIT_REGEX,
@@ -8,10 +6,6 @@ import {
     GLOBALGIVING_URL
 } from './constants.js';
 import {elementForQuery, gotoUrl} from './pageHelpers.js';
-
-// import * as fs from "fs";
-
-const {DateTime} = luxon;
 
 const donationId = async (column) => {
     // console.log(`Evaluating donation ID for column ${column}...`);
