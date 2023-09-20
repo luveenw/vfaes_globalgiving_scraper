@@ -24,7 +24,12 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+
+    - name: Install dependencies
+      run: npm install
+    
     - name: Build CSS
       run: npm run css-build
+    
     - name: Deploy CSS
       run: npm run deploy
