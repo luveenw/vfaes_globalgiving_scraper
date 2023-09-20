@@ -2,8 +2,8 @@ import process from "process";
 import path from "path";
 import { fileURLToPath } from "url";
 import express from "express";
-import handlebars from "express-handlebars";
-import luxon from "luxon";
+import {create} from "express-handlebars";
+import { DateTime } from "luxon";
 import { isDateAfter, isDateBetween, runScraper } from "./src/scraper.js";
 import {
   getRecipients,
@@ -12,8 +12,6 @@ import {
   failuresString,
 } from "./src/mailer.js";
 import { Y_M_D } from "./src/constants.js";
-
-const { DateTime } = luxon;
 
 // runScraper().then(result => console.log(`Wrote results to file ${result}`));
 
@@ -35,11 +33,11 @@ app.set("views", path.join(__dirname, "/public/views"));
 //Sets handlebars configurations (we will go through them later on)
 app.engine(
   "hbs",
-  handlebars({
+  create({
     layoutsDir: path.join(__dirname, "/public/views/layouts"),
     partialsDir: path.join(__dirname, "/public/views/partials"),
     extname: "hbs",
-  })
+  }).engine
 );
 
 app.use(express.static("public"));

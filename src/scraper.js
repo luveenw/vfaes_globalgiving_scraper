@@ -1,4 +1,4 @@
-import luxon from 'luxon';
+import { DateTime } from 'luxon';
 // import fspkg from 'fs';
 import {default as puppeteer} from 'puppeteer-extra';
 
@@ -16,8 +16,6 @@ import {
     CONTINUE_SCRAPE,
     DONATIONS_URL,
     DONATION_DATE_PATTERN,
-    END_DATE,
-    START_DATE,
     STOP_SCRAPE,
     TABLE_ROW_SELECTOR,
     TWO_CAPTCHA_TOKEN,
@@ -28,7 +26,6 @@ import RecaptchaPlugin from "puppeteer-extra-plugin-recaptcha";
 import StealthPlugin from "puppeteer-extra-plugin-stealth";
 
 // const fs = fspkg.promises;
-const {DateTime} = luxon;
 
 /**
 * convenience method used for testing that puppeteer url navigation works as expected

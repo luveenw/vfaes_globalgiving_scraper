@@ -1,8 +1,7 @@
 import process from 'process';
-import luxon from 'luxon';
+import {DateTime} from 'luxon';
 import {default as dotenv} from 'dotenv';
 
-const {DateTime} = luxon;
 dotenv.config();
 
 // GlobalGiving
